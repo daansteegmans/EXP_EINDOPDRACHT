@@ -12,7 +12,7 @@
 
 Functions::Functions()
 {
-    //TEST
+    //TESTERDETEST
 }
 
 string Functions::Collision(Player *objA, Wall *objB)
