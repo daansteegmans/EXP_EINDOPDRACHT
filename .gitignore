@@ -1,0 +1,13 @@
+xcuserdata
+*.xcworkspace
+ED_eindopdracht.xcodeproj/project.xcworkspace/xcuserdata/bastiaanandriessen.xcuserdata/UserInterfaceState.xcuserstate
+ED_eindopdracht.xcodeproj/project.xcworkspace/xcuserdata/daansteegmans.xcuserdata/UserInterfaceState.xcuserstate
+bin/ED_eindopdrachtDebug.app/Contents/MacOS/ED_eindopdrachtDebug
+*.pbxuser
+*.perspective
+*.perspectivev3
+*.mode1v3
+*.mode2v3
+openFrameworks.a
+openFrameworksDebug.a
+openFrameworksUniversal.a
