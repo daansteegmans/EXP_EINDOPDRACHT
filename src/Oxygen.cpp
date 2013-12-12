@@ -17,6 +17,7 @@ Oxygen::Oxygen(float xPos, float yPos)
     y = yPos;
     maxVelX = 1;
     velX = maxVelX;
+    velY = 1.5;
     maxDiffX = 0.3;
     diffX = maxDiffX;
     isVelXSignPositive = true;
@@ -31,8 +32,6 @@ void Oxygen::update()
     if(velX > -0.09 && velX < 0.09 && velX != 0){
         velX = 0;
     }
-    
-    //cout << "x: " << x << " velX: " << velX << " diffX: " << diffX << endl;
     
     if(velX>0){
         if(velX < .5){
@@ -62,7 +61,7 @@ void Oxygen::update()
     }
     
     x = sin(sinIncrement*PI/180)*2;
-    y+=1.5;
+    y+=velY;
     
     if(x >= 0)
     {
@@ -72,7 +71,7 @@ void Oxygen::update()
     }
     sinIncrement++;
     
-    //cout << "xPos: " << x << endl;
+    cout << "velY bubble: " << velY << endl;
 }
 
 void Oxygen::draw()

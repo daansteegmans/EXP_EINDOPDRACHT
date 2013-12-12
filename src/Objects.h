@@ -18,6 +18,7 @@ class Objects
         Objects();
         void update();
         void draw();
+        float velY;
     
     private:
         Oxygen* oxygen;

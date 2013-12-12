@@ -5,7 +5,7 @@
 void testApp::setup()
 {
     ofAddListener(arduino.EInitialized, this, &testApp::setupArduino);
-    arduino.connect("/dev/tty.usbmodemfa131", 57600);
+    arduino.connect("/dev/tty.usbmodem1411", 57600);
     
     functions = new Functions();
     player = new Player();
@@ -36,10 +36,13 @@ void testApp::update()
         background->speedY = 5;
         background->speedX = 0;
         
+        objects->velY = 4.5;
+        
         arduino.sendDigital(12, ARD_HIGH);
         arduino.sendDigital(13, ARD_HIGH);
     }else{
         background->speedY = 1;
+        objects->velY = 1.5;
         
         if(arduino.getDigital(4) == 1){
             background->speedX = 2;

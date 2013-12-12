@@ -22,6 +22,7 @@ class Oxygen
         float originalX;
         float y;
         float sinIncrement;
+        float velY;
     
     private:
         float velX;

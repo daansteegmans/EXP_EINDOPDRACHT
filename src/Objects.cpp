@@ -9,7 +9,9 @@
 #include "Objects.h"
 
 Objects::Objects()
-{    
+{
+    velY = 1.5;
+    
     for(int i=0; i<10; i++)
     {
         oxygen = new Oxygen(0, 0);
@@ -32,6 +34,7 @@ Objects::Objects()
 void Objects::update()
 {
     for(int i=0; i<oxygenBubbles.size(); i++){
+        oxygenBubbles[i]->velY = velY;
         oxygenBubbles[i]->update();
     }
 }
