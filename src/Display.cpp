@@ -27,16 +27,7 @@ Display::Display()
     font = new ofTrueTypeFont();
     font->loadFont("fonts/Piston_Pressure.otf", 24);
     
-    fuel = 100;
-    health = 100;
-    fillTotalWidth = 391;
-    fillTotalHeight = 40;
-    
-    altitude = 0;
-    speed = 150;
-    time = 0;
-    temperature = 20;
-    coins = 0;
+    Display::setDefault();
 }
 
 void Display::update()
@@ -106,4 +97,17 @@ void Display::draw()
     convert.clear();
     
     ofSetColor(255,255,255,255);
+}
+
+void Display::setDefault(){
+    fuel = 100;
+    health = 100;
+    fillTotalWidth = 391;
+    fillTotalHeight = 40;
+    
+    altitude = 0;
+    speed = 150;
+    time = 0;
+    temperature = 20;
+    coins = 0;
 }

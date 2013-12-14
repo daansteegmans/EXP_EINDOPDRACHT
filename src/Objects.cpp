@@ -10,6 +10,26 @@
 
 Objects::Objects()
 {
+    Objects::setDefault();
+}
+
+void Objects::update()
+{
+    for(int i=0; i<coins.size(); i++){
+        coins[i]->shiftingX = velX;
+        coins[i]->velY = velY;
+        coins[i]->update();
+    }
+}
+
+void Objects::draw()
+{
+    for(int i=0; i<coins.size(); i++){
+        coins[i]->draw();
+    }
+}
+
+void Objects::setDefault(){
     velX = 0;
     velY = 1.5;
     int coinTotalFrames = 8;
@@ -36,20 +56,4 @@ Objects::Objects()
         coin->originalX = coin->x;
         coins.push_back(coin);
     };
-}
-
-void Objects::update()
-{
-    for(int i=0; i<coins.size(); i++){
-        coins[i]->shiftingX = velX;
-        coins[i]->velY = velY;
-        coins[i]->update();
-    }
-}
-
-void Objects::draw()
-{
-    for(int i=0; i<coins.size(); i++){
-        coins[i]->draw();
-    }
 }

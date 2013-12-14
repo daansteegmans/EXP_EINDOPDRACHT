@@ -17,6 +17,7 @@ class Background
         Background();
         void update();
         void draw();
+        void setDefault();
     
         float x;
         float y;

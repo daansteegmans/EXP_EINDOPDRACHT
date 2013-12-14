@@ -14,17 +14,7 @@ Player::Player()
 {
     img.loadImage("player/player.png");
     
-    velX = 0;
-    velY = 0;
-    friction = .9;
-    speed = 2;
-    maxYSpeed = 0.6;
-    x = ofGetWidth()/2 - img.getWidth()/ 2;
-    y = ((ofGetHeight() - img.getHeight()) / 2) + 70;
-    
-    // move sound
-    // soundPlayer.loadSound("sounds/move.mp3");
-    // soundPlayer.setLoop(true);
+    Player::setDefault();
 }
 
 void Player::update()
@@ -61,4 +51,18 @@ void Player::draw()
     x += velX;
     y -= velY;
     img.draw(x,y);
+}
+
+void Player::setDefault(){
+    velX = 0;
+    velY = 0;
+    friction = .9;
+    speed = 2;
+    maxYSpeed = 0.6;
+    x = ofGetWidth()/2 - img.getWidth()/ 2;
+    y = ((ofGetHeight() - img.getHeight()) / 2) + 70;
+    
+    // move sound
+    // soundPlayer.loadSound("sounds/move.mp3");
+    // soundPlayer.setLoop(true);
 }

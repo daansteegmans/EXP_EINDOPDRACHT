@@ -18,6 +18,7 @@ class Player
         void update();
         void draw();
         void move(int dir);
+        void setDefault();
     
         float x;
         float y;

@@ -17,6 +17,7 @@ class Display
         Display();
         void update();
         void draw();
+        void setDefault();
 
         ofImage topBg;
         ofImage topBgBorder;

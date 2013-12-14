@@ -18,6 +18,7 @@ class Objects
         Objects();
         void update();
         void draw();
+        void setDefault();
         float velX;
         float velY;
         vector<Coin *> coins;

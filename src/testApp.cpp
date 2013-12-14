@@ -16,7 +16,7 @@ void testApp::setup()
     timeStarted = ofGetElapsedTimeMillis();
     
     keys.resize(2);
-    gameOver = false;
+    gameOverTime = 0;
 }
 
 void testApp::setupArduino(const int &version){
@@ -33,7 +33,7 @@ void testApp::setupArduino(const int &version){
 void testApp::update()
 {
     cout << display->fuel << endl;
-    if(!gameOver && !(display->fuel<=0) && !(display->health<=0)){
+    if(gameOverTime == 0 && !(display->fuel<=0) && !(display->health<=0)){
         display->time = ofGetElapsedTimeMillis()-timeStarted;
     
         for(int i=0; i<objects->coins.size(); i++){
@@ -109,7 +109,20 @@ void testApp::update()
         objects->update();
         display->update();
     }else{
-        gameOver = true;
+        if(gameOverTime == 0){
+            gameOverTime = ofGetElapsedTimeMillis()-timeStarted;
+        }
+        
+        int currentTime = ofGetElapsedTimeMillis()-timeStarted;
+        if(/*arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1*/(keys[356] == true || keys[358] == true) && currentTime > (gameOverTime+2000)){
+            gameOverTime = 0;
+            
+            timeStarted = 0;
+            background->setDefault();
+            player->setDefault();
+            objects->setDefault();
+            display->setDefault();
+        }
     }
 }
 

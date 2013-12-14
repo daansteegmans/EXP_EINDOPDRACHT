@@ -29,5 +29,5 @@ class testApp : public ofBaseApp{
         Display* display;
         vector<int> keys;
         int timeStarted;
-        bool gameOver;
+        int gameOverTime;
 };
