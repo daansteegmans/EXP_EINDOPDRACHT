@@ -10,6 +10,7 @@
 
 Objects::Objects()
 {
+    velX = 0;
     velY = 1.5;
     int coinTotalFrames = 8;
     
@@ -23,13 +24,13 @@ Objects::Objects()
         coin = new Coin(0, 0, startFrame);
         
         coin->x = sin((i*4)*PI/180)*2;
-        coin->y = i*50;
+        coin->y = i*50 - 10*50;
         coin->sinIncrement = i*50;
         
         if(coin->x >= 0){
-            coin->x = (ofGetWidth()/2 - coin->imgCoin.width/2) - (coin->x-0) * 30;
+            coin->x = (ofGetWidth()/2 - coin->img.width/2) - (coin->x-0) * 30 + 350;
         }else{
-            coin->x = (ofGetWidth()/2 - coin->imgCoin.width/2) + (0-coin->x) * 30;
+            coin->x = (ofGetWidth()/2 - coin->img.width/2) + (0-coin->x) * 30 + 350;
         }
         
         coin->originalX = coin->x;
@@ -40,6 +41,7 @@ Objects::Objects()
 void Objects::update()
 {
     for(int i=0; i<coins.size(); i++){
+        coins[i]->shiftingX = velX;
         coins[i]->velY = velY;
         coins[i]->update();
     }

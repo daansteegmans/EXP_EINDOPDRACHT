@@ -9,14 +9,14 @@
 #ifndef __ED_eindopdracht__Functions__
 #define __ED_eindopdracht__Functions__
 
-#include "Wall.h"
 #include "Player.h"
+#include "Coin.h"
 
 class Functions
 {
     public:
         Functions();
-        string Collision(Player *objA, Wall *objB);
+        string checkCollision(Player *objA, Coin *objB);
     
     private:
 };

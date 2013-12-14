@@ -15,8 +15,7 @@ class Coin
 {
     public:
         Coin(float xPos, float yPos, int startFrame);
-        //ofImage imgOxygen;
-        ofVideoPlayer imgCoin;
+        ofVideoPlayer img;
         void update();
         void draw();
         float x;
@@ -25,6 +24,8 @@ class Coin
         float sinIncrement;
         float velY;
         float velX;
+        float shiftingX; //totale verplaatsing (other than sinus animation)
+        string name;
     
     private:
         float maxVelX;

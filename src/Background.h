@@ -22,6 +22,8 @@ class Background
         float y;
         float speedY;
         float speedX;
+        int maxSpeedY;
+        int minSpeedY;
         ofImage img;
     
     private:

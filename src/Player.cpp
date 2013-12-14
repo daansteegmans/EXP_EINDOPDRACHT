@@ -27,51 +27,13 @@ Player::Player()
     // soundPlayer.setLoop(true);
 }
 
-void Player::move(int dir)
-{    
-    switch(dir)
-    {
-        case 1: // left
-            if(velX > -speed){
-                velX--;
-            }
-        break;
-            
-        case 2: // right
-            if(velX < speed){
-                velX++;
-            }
-        break;
-            
-        case 3: //boost: player goes up
-            if(!(y < (ofGetHeight()/2 - img.getHeight()/2))){
-                if(velY <= 0){
-                    velY = .5;
-                }else{
-                    if(velY < 3){
-                        velY *= 1.2;
-                    }
-                }
-            }else{
-                velY *= .95;
-            }
-        break;
-            
-        case 4: //boost release: player goes down
-            velY = -2;
-        break;
-    }
-    
-    //soundPlayer.play();
-}
-
 void Player::update()
 {
     x += velX;
     if(velY > maxYSpeed){
         velY = maxYSpeed;
-    }else if(velY < -maxYSpeed){
-        velY = -maxYSpeed;
+    }else if(velY < -(maxYSpeed*1.6)){
+        velY = -(maxYSpeed*1.6);
     }
     y -= velY;
     velX *= friction;

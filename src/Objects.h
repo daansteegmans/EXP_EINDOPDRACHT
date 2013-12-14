@@ -18,11 +18,12 @@ class Objects
         Objects();
         void update();
         void draw();
+        float velX;
         float velY;
+        vector<Coin *> coins;
     
     private:
         Coin* coin;
-        vector<Coin *> coins;
     
 };
 

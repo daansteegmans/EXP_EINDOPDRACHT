@@ -19,14 +19,33 @@ class Display
         void draw();
 
         ofImage topBg;
+        ofImage topBgBorder;
         ofImage bottomBg;
     
-        int fuelBorderLeft;
-        int fuelBorderRight;
-        int healthBorderLeft;
-        int healthBorderRight;
+        ofImage iconAltitude;
+        ofImage iconSpeed;
+        ofImage iconTime;
+        ofImage iconTemperature;
+        ofImage iconCoins;
+    
+        float altitude;
+        int speed;
+        int time;
+        int temperature;
+        int coins;
+    
+        ofImage fuelOriginalFill;
+        ofImage fuelCurrentFill;
+        float fuel;
+    
+        ofImage healthOriginalFill;
+        ofImage healthCurrentFill;
+        float health;
     
     private:
+        ofTrueTypeFont *font;
+        int fillTotalWidth;
+        int fillTotalHeight;
     
 };
 

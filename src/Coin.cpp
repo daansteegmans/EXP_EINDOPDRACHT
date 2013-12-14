@@ -10,15 +10,18 @@
 
 Coin::Coin(float xPos, float yPos, int startFrame)
 {
-    imgCoin.setFrame(startFrame);
-    imgCoin.loadMovie("coin/coin.gif");
-    imgCoin.play();
+    name = "coin";
+    
+    img.setFrame(startFrame);
+    img.loadMovie("coin/coin.gif");
+    img.play();
     
     x = xPos;
     originalX = x;
     y = yPos;
     maxVelX = 1;
     velX = maxVelX;
+    shiftingX = 0;
     velY = 1.5;
     maxDiffX = 0.3;
     diffX = maxDiffX;
@@ -28,10 +31,11 @@ Coin::Coin(float xPos, float yPos, int startFrame)
 
 void Coin::update()
 {
-    imgCoin.update();
+    img.update();
     
     velX-=diffX;
     x+=velX;
+    originalX+=shiftingX;
     
     if(velX > -0.09 && velX < 0.09 && velX != 0){
         velX = 0;
@@ -74,12 +78,10 @@ void Coin::update()
         x = originalX + (0-x) * 30;
     }
     sinIncrement++;
-    
-    //cout << "velY bubble: " << velY << endl;
+    //cout << shiftingX << endl;
 }
 
 void Coin::draw()
 {
-    //imgOxygen.draw(x,y);
-    imgCoin.draw(x, y);
+    img.draw(x, y);
 }

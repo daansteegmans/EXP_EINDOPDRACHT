@@ -7,15 +7,11 @@
 //
 
 #include "Functions.h"
-#include "Player.h"
-#include "Wall.h"
 
 Functions::Functions()
-{
-    //TESTERDETEST
-}
+{}
 
-string Functions::Collision(Player *objA, Wall *objB)
+string Functions::checkCollision(Player *objA, Coin *objB)
 {
     int vX = (objA->x + (objA->img.getWidth()/2)) - (objB->x + (objB->img.getWidth()/2));
     int vY = (objA->y + (objA->img.getHeight()/2)) - (objB->y + (objB->img.getHeight()/2));
@@ -31,18 +27,18 @@ string Functions::Collision(Player *objA, Wall *objB)
         if(oX >= oY){
             if(vY > 0){
                 colDir = "T";
-                objA->y += oY;
+                //objA->y += oY;
             }else{
                 colDir = "B";
-                objA->y -= oY;
+                //objA->y -= oY;
             }
         }else{
             if(vX > 0){
                 colDir = "L";
-                objA->x += oX;
+                //objA->x += oX;
             }else{
                 colDir = "R";
-                objA->x -= oX;
+                //objA->x -= oX;
             }
         }
         //return [objB, colDir];

@@ -13,7 +13,10 @@ void testApp::setup()
     objects = new Objects();
     display = new Display();
     
+    timeStarted = ofGetElapsedTimeMillis();
+    
     keys.resize(2);
+    gameOver = false;
 }
 
 void testApp::setupArduino(const int &version){
@@ -29,56 +32,85 @@ void testApp::setupArduino(const int &version){
 //--------------------------------------------------------------
 void testApp::update()
 {
-    /*arduino.update();
-    ofLog() << "pin4: " << arduino.getDigital(4) << endl;
-    ofLog() << "pin5: " << arduino.getDigital(5) << endl;*/
+    cout << display->fuel << endl;
+    if(!gameOver && !(display->fuel<=0) && !(display->health<=0)){
+        display->time = ofGetElapsedTimeMillis()-timeStarted;
     
-    if(/*arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1*/keys[356] == true && keys[358] == true){
-        background->speedY = 5;
-        background->speedX = 0;
-        
-        objects->velY = 4.5;
-        if(player->y > ((ofGetHeight() - player->img.getHeight()) / 2) - 50){
-            player->velY += 0.07;
+        for(int i=0; i<objects->coins.size(); i++){
+            if(functions->checkCollision(player, objects->coins[i]) != "no collision"){
+                vector<Coin *> coins;
+                for(int j=0; j<objects->coins.size(); j++){
+                    if(objects->coins[j] != objects->coins[i]){
+                        coins.push_back(objects->coins[j]);
+                    }
+                }
+                objects->coins = coins;
+                display->coins++;
+            }
         }
-        
-        /*arduino.sendDigital(12, ARD_HIGH);
-        arduino.sendDigital(13, ARD_HIGH);*/
-    }else{
-        background->speedY = 1;
-        objects->velY = 1.5;
-        
-        if(player->y < ((ofGetHeight() - player->img.getHeight()) / 2) + 70 && (player->y - player->velY) <= ((ofGetHeight() - player->img.getHeight()) / 2) + 70){
-            player->velY -= 0.07;
-        } else {
-            player->velY = 0;
-        }
-        
-        if(/*arduino.getDigital(4) == 1*/keys[356] == true){
-            background->speedX = 2;
-            
-            /*arduino.sendDigital(13, ARD_HIGH);
-            arduino.sendDigital(12, ARD_LOW);*/
-        }
-        if(/*arduino.getDigital(5) == 1*/keys[358] == true){
-            background->speedX = -2;
-            
-            /*arduino.sendDigital(12, ARD_HIGH);
-            arduino.sendDigital(13, ARD_LOW);*/
-        }
-        
-        if(/*arduino.getDigital(4) != 1 && arduino.getDigital(5) != 1*/ keys[356] == false && keys[358] == false){
+    
+        /*arduino.update();
+        ofLog() << "pin4: " << arduino.getDigital(4) << endl;
+        ofLog() << "pin5: " << arduino.getDigital(5) << endl;*/
+    
+        if(/*arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1*/keys[356] == true && keys[358] == true){
+            background->speedY += 0.3;
             background->speedX = 0;
+            objects->velX = 0;
+            objects->velY = 4.5;
+            display->fuel-=0.08;
+        
+            if(player->y > ((ofGetHeight() - player->img.getHeight()) / 2) - 50){
+                player->velY += 0.07;
+            }
+        
+            /*arduino.sendDigital(12, ARD_HIGH);
+             arduino.sendDigital(13, ARD_HIGH);*/
+        }else{
+            background->speedY -= 0.05;
+            objects->velX = 0;
+            objects->velY = 1.5;
+            display->fuel-=0.02;
+        
+            if(player->y < ((ofGetHeight() - player->img.getHeight()) / 2) + 70 && (player->y - player->velY) <= ((ofGetHeight() -  player->img.getHeight()) / 2) + 70){
+                player->velY -= 0.1;
+            } else {
+                player->velY = 0;
+            }
+        
+            //LEFT
+            if(/*arduino.getDigital(4) == 1*/keys[356] == true){
+                background->speedX = 3;
+                objects->velX = 2.2;
             
-            /*arduino.sendDigital(12, ARD_LOW);
-            arduino.sendDigital(13, ARD_LOW);*/
+                /*arduino.sendDigital(13, ARD_HIGH);
+                arduino.sendDigital(12, ARD_LOW);*/
+            }
+        
+            //RIGHT
+            if(/*arduino.getDigital(5) == 1*/keys[358] == true){
+                background->speedX = -3;
+                objects->velX = -2.2;
+            
+                /*arduino.sendDigital(12, ARD_HIGH);
+             arduino.sendDigital(13, ARD_LOW);*/
+            }
+        
+            if(/*arduino.getDigital(4) != 1 && arduino.getDigital(5) != 1*/ keys[356] == false && keys[358] == false){
+                background->speedX = 0;
+            
+                /*arduino.sendDigital(12, ARD_LOW);
+                arduino.sendDigital(13, ARD_LOW);*/
+            }
         }
-    }
     
-    background->update();
-    player->update();
-    objects->update();
-    display->update();
+        background->update();
+        player->update();
+        objects->update();
+        display->update();
+    }else{
+        gameOver = true;
+    }
 }
 
 //--------------------------------------------------------------
@@ -99,9 +131,6 @@ void testApp::keyPressed(int key)
 //--------------------------------------------------------------
 void testApp::keyReleased(int key)
 {
-    /*if(keys[356] == true && keys[358] == true){
-        player->move(4);
-    }*/
     keys[key] = false;
 }
 

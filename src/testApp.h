@@ -7,6 +7,8 @@
 #include "Backgrounds.h"
 #include "Display.h"
 
+#include <string.h>
+
 class testApp : public ofBaseApp{
 
 	public:
@@ -26,4 +28,6 @@ class testApp : public ofBaseApp{
         Objects* objects;
         Display* display;
         vector<int> keys;
+        int timeStarted;
+        bool gameOver;
 };

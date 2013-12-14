@@ -15,12 +15,20 @@ Background::Background()
     x = -(img.getWidth() - ofGetWidth())/2;
     y = -img.getHeight() + ofGetHeight();
     
+    maxSpeedY = 5;
+    minSpeedY = 1;
     speedX = 0;
-    speedY = 1;
+    speedY = minSpeedY;
 }
 
 void Background::update()
 {
+    if(speedY > maxSpeedY){
+        speedY = maxSpeedY;
+    } else if(speedY < minSpeedY){
+        speedY = minSpeedY;
+    }
+    
     x += speedX;
     y += speedY;
 }

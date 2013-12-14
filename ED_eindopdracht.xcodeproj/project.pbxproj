@@ -156,13 +156,13 @@
 			name = World;
 			sourceTree = "<group>";
 		};
-		831C57ED183F5B050055FB72 /* functions */ = {
+		831C57ED183F5B050055FB72 /* utility */ = {
 			isa = PBXGroup;
 			children = (
 				831C57EE183F5B1A0055FB72 /* Functions.cpp */,
 				831C57EF183F5B1A0055FB72 /* Functions.h */,
 			);
-			name = functions;
+			name = utility;
 			sourceTree = "<group>";
 		};
 		BB4B014C10F69532006C3DED /* addons */ = {
@@ -235,7 +235,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				831C57ED183F5B050055FB72 /* functions */,
+				831C57ED183F5B050055FB72 /* utility */,
 				831C57E6183F5A540055FB72 /* World */,
 				831C57DE183F447B0055FB72 /* Player */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
