@@ -11,37 +11,43 @@
 Objects::Objects()
 {
     velY = 1.5;
+    int coinTotalFrames = 8;
     
     for(int i=0; i<10; i++)
     {
-        oxygen = new Oxygen(0, 0);
+        int startFrame = i*2;
+        if(startFrame >= coinTotalFrames){
+            int multiplier = round(startFrame/coinTotalFrames);
+            startFrame -= (coinTotalFrames*multiplier);
+        }
+        coin = new Coin(0, 0, startFrame);
         
-        oxygen->x = sin((i*4)*PI/180)*2;
-        oxygen->y = i*50;
-        oxygen->sinIncrement = i*50;
+        coin->x = sin((i*4)*PI/180)*2;
+        coin->y = i*50;
+        coin->sinIncrement = i*50;
         
-        if(oxygen->x >= 0){
-            oxygen->x = (ofGetWidth()/2 - oxygen->imgOxygen.width/2) - (oxygen->x-0) * 30;
+        if(coin->x >= 0){
+            coin->x = (ofGetWidth()/2 - coin->imgCoin.width/2) - (coin->x-0) * 30;
         }else{
-            oxygen->x = (ofGetWidth()/2 - oxygen->imgOxygen.width/2) + (0-oxygen->x) * 30;
+            coin->x = (ofGetWidth()/2 - coin->imgCoin.width/2) + (0-coin->x) * 30;
         }
         
-        oxygen->originalX = oxygen->x;
-        oxygenBubbles.push_back(oxygen);
+        coin->originalX = coin->x;
+        coins.push_back(coin);
     };
 }
 
 void Objects::update()
 {
-    for(int i=0; i<oxygenBubbles.size(); i++){
-        oxygenBubbles[i]->velY = velY;
-        oxygenBubbles[i]->update();
+    for(int i=0; i<coins.size(); i++){
+        coins[i]->velY = velY;
+        coins[i]->update();
     }
 }
 
 void Objects::draw()
 {
-    for(int i=0; i<oxygenBubbles.size(); i++){
-        oxygenBubbles[i]->draw();
+    for(int i=0; i<coins.size(); i++){
+        coins[i]->draw();
     }
 }

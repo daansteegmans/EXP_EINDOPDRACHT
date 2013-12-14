@@ -24,6 +24,7 @@ class Player
         ofImage img;
         float velX;
         float speed;
+        float maxYSpeed;
         float friction;
         float velY;
     

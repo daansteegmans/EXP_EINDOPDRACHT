@@ -25,6 +25,7 @@ class Background
         ofImage img;
     
     private:
+        
 };
 
 #endif /* defined(__ED_eindopdracht__Background__) */

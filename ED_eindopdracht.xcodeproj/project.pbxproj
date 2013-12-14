@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34ACC601185BB180006AFE30 /* Display.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34ACC5FF185BB180006AFE30 /* Display.cpp */; };
 		831C57DD183F44730055FB72 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 831C57DB183F44730055FB72 /* Player.cpp */; };
-		831C57EC183F5A720055FB72 /* Oxygen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 831C57EA183F5A720055FB72 /* Oxygen.cpp */; };
+		831C57EC183F5A720055FB72 /* Coin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 831C57EA183F5A720055FB72 /* Coin.cpp */; };
 		831C57F0183F5B1A0055FB72 /* Functions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 831C57EE183F5B1A0055FB72 /* Functions.cpp */; };
 		83C92337184C840C00BF052F /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83C92335184C840C00BF052F /* Background.cpp */; };
 		83EE1773185210190078CF0E /* Objects.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83EE1771185210190078CF0E /* Objects.cpp */; };
@@ -65,10 +66,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		34ACC5FF185BB180006AFE30 /* Display.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Display.cpp; sourceTree = "<group>"; };
+		34ACC600185BB180006AFE30 /* Display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Display.h; sourceTree = "<group>"; };
 		831C57DB183F44730055FB72 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
 		831C57DC183F44730055FB72 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		831C57EA183F5A720055FB72 /* Oxygen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Oxygen.cpp; sourceTree = "<group>"; };
-		831C57EB183F5A720055FB72 /* Oxygen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Oxygen.h; sourceTree = "<group>"; };
+		831C57EA183F5A720055FB72 /* Coin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Coin.cpp; sourceTree = "<group>"; };
+		831C57EB183F5A720055FB72 /* Coin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coin.h; sourceTree = "<group>"; };
 		831C57EE183F5B1A0055FB72 /* Functions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Functions.cpp; sourceTree = "<group>"; };
 		831C57EF183F5B1A0055FB72 /* Functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Functions.h; sourceTree = "<group>"; };
 		83C92335184C840C00BF052F /* Background.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Background.cpp; sourceTree = "<group>"; };
@@ -143,10 +146,12 @@
 			children = (
 				83EE1771185210190078CF0E /* Objects.cpp */,
 				83EE1772185210190078CF0E /* Objects.h */,
-				831C57EA183F5A720055FB72 /* Oxygen.cpp */,
-				831C57EB183F5A720055FB72 /* Oxygen.h */,
+				831C57EA183F5A720055FB72 /* Coin.cpp */,
+				831C57EB183F5A720055FB72 /* Coin.h */,
 				83C92335184C840C00BF052F /* Background.cpp */,
 				83C92336184C840C00BF052F /* Background.h */,
+				34ACC5FF185BB180006AFE30 /* Display.cpp */,
+				34ACC600185BB180006AFE30 /* Display.h */,
 			);
 			name = World;
 			sourceTree = "<group>";
@@ -338,8 +343,9 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
+				34ACC601185BB180006AFE30 /* Display.cpp in Sources */,
 				831C57DD183F44730055FB72 /* Player.cpp in Sources */,
-				831C57EC183F5A720055FB72 /* Oxygen.cpp in Sources */,
+				831C57EC183F5A720055FB72 /* Coin.cpp in Sources */,
 				831C57F0183F5B1A0055FB72 /* Functions.cpp in Sources */,
 				83C92337184C840C00BF052F /* Background.cpp in Sources */,
 				83EE1773185210190078CF0E /* Objects.cpp in Sources */,

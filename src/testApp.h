@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Objects.h"
 #include "Backgrounds.h"
+#include "Display.h"
 
 class testApp : public ofBaseApp{
 
@@ -23,5 +24,6 @@ class testApp : public ofBaseApp{
         Player* player;
         Background* background;
         Objects* objects;
+        Display* display;
         vector<int> keys;
 };

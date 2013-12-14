@@ -18,8 +18,9 @@ Player::Player()
     velY = 0;
     friction = .9;
     speed = 2;
-    x = (ofGetWidth() - img.getHeight()) / 2;
-    y = ((ofGetHeight() - img.getHeight()) / 2) + 50;
+    maxYSpeed = 0.6;
+    x = ofGetWidth()/2 - img.getWidth()/ 2;
+    y = ((ofGetHeight() - img.getHeight()) / 2) + 70;
     
     // move sound
     // soundPlayer.loadSound("sounds/move.mp3");
@@ -67,7 +68,16 @@ void Player::move(int dir)
 void Player::update()
 {
     x += velX;
+    if(velY > maxYSpeed){
+        velY = maxYSpeed;
+    }else if(velY < -maxYSpeed){
+        velY = -maxYSpeed;
+    }
+    y -= velY;
     velX *= friction;
+    if(velY > 0){
+        velY *= friction;
+    }
 }
 
 void Player::draw()

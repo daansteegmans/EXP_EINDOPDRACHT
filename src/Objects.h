@@ -10,7 +10,7 @@
 #define __ED_eindopdracht__Objects__
 
 #include "ofMain.h"
-#include "Oxygen.h"
+#include "Coin.h"
 
 class Objects
 {
@@ -21,8 +21,8 @@ class Objects
         float velY;
     
     private:
-        Oxygen* oxygen;
-        vector<Oxygen *> oxygenBubbles;
+        Coin* coin;
+        vector<Coin *> coins;
     
 };
 
