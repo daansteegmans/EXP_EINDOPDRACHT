@@ -190,7 +190,7 @@ void testApp::update()
         }
         
         int currentTime = ofGetElapsedTimeMillis()-timeStarted;
-        if(/*(arduino.getDigital(4) == 1 || arduino.getDigital(5) == 1)*/ (keys[356] == true || keys[358] == true) && currentTime > (gameOverTime+3000)){
+        if(/*(arduino.getDigital(3) == 1 || arduino.getDigital(4) == 1 || arduino.getDigital(5) == 1)*/ (keys[356] == true || keys[358] == true) && currentTime > (gameOverTime+3000)){
             gameOverTime = 0;
             
             timeStarted = currentTime + timeStarted;
