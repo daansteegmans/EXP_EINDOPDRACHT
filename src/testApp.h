@@ -6,6 +6,7 @@
 #include "Objects.h"
 #include "Backgrounds.h"
 #include "Display.h"
+#include "Countdown.h"
 
 #include <string.h>
 
@@ -27,7 +28,10 @@ class testApp : public ofBaseApp{
         Background* background;
         Objects* objects;
         Display* display;
+        Countdown* countDown;
         vector<int> keys;
         int timeStarted;
+        int startDelay;
+        int controlDelay;
         int gameOverTime;
 };

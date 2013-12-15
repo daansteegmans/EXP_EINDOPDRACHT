@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34790798185D96F4005E7E60 /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34790796185D96F4005E7E60 /* Menu.cpp */; };
+		3479079B185DB3D9005E7E60 /* Countdown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34790799185DB3D9005E7E60 /* Countdown.cpp */; };
 		34ACC601185BB180006AFE30 /* Display.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34ACC5FF185BB180006AFE30 /* Display.cpp */; };
 		831C57DD183F44730055FB72 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 831C57DB183F44730055FB72 /* Player.cpp */; };
 		831C57EC183F5A720055FB72 /* Coin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 831C57EA183F5A720055FB72 /* Coin.cpp */; };
@@ -66,6 +68,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		34790796185D96F4005E7E60 /* Menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
+		34790797185D96F4005E7E60 /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
+		34790799185DB3D9005E7E60 /* Countdown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Countdown.cpp; sourceTree = "<group>"; };
+		3479079A185DB3D9005E7E60 /* Countdown.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Countdown.h; sourceTree = "<group>"; };
 		34ACC5FF185BB180006AFE30 /* Display.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Display.cpp; sourceTree = "<group>"; };
 		34ACC600185BB180006AFE30 /* Display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Display.h; sourceTree = "<group>"; };
 		831C57DB183F44730055FB72 /* Player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Player.cpp; sourceTree = "<group>"; };
@@ -132,6 +138,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		34790792185D96DA005E7E60 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				34790796185D96F4005E7E60 /* Menu.cpp */,
+				34790797185D96F4005E7E60 /* Menu.h */,
+			);
+			name = Menu;
+			sourceTree = "<group>";
+		};
 		831C57DE183F447B0055FB72 /* Player */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +167,8 @@
 				83C92336184C840C00BF052F /* Background.h */,
 				34ACC5FF185BB180006AFE30 /* Display.cpp */,
 				34ACC600185BB180006AFE30 /* Display.h */,
+				34790799185DB3D9005E7E60 /* Countdown.cpp */,
+				3479079A185DB3D9005E7E60 /* Countdown.h */,
 			);
 			name = World;
 			sourceTree = "<group>";
@@ -235,6 +252,7 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				34790792185D96DA005E7E60 /* Menu */,
 				831C57ED183F5B050055FB72 /* utility */,
 				831C57E6183F5A540055FB72 /* World */,
 				831C57DE183F447B0055FB72 /* Player */,
@@ -341,6 +359,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34790798185D96F4005E7E60 /* Menu.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* testApp.cpp in Sources */,
 				34ACC601185BB180006AFE30 /* Display.cpp in Sources */,
@@ -349,6 +368,7 @@
 				831C57F0183F5B1A0055FB72 /* Functions.cpp in Sources */,
 				83C92337184C840C00BF052F /* Background.cpp in Sources */,
 				83EE1773185210190078CF0E /* Objects.cpp in Sources */,
+				3479079B185DB3D9005E7E60 /* Countdown.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

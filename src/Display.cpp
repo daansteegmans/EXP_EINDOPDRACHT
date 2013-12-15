@@ -30,6 +30,29 @@ Display::Display()
     Display::setDefault();
 }
 
+void Display::setDefault(){
+    fuel = 100;
+    health = 100;
+    fillTotalWidth = 391;
+    fillTotalHeight = 40;
+    
+    altitude = 0;
+    defaultSpeed = 150;
+    speed = defaultSpeed;
+    time = 0;
+    temperature = 20;
+    coins = 0;
+    
+    topY = -topBg.height;
+    bottomY = ofGetHeight();
+    topDefaultY = 0;
+    bottomDefaultY = ofGetHeight() - bottomBg.height;
+    alpha = 0;
+    
+    Display::update();
+    Display::draw();
+}
+
 void Display::update()
 {
     fuel = round(fuel*100)/100;
@@ -46,68 +69,57 @@ void Display::update()
 
 void Display::draw()
 {
-    topBg.draw(ofGetWidth()/2 - topBg.getWidth()/2, 0);
-    fuelCurrentFill.draw(ofGetWidth()/2 - topBg.getWidth()/2 + 67 + (fillTotalWidth - fuelCurrentFill.width), 45);
-    healthCurrentFill.draw(ofGetWidth()/2 - topBg.getWidth()/2 + 468, 45);
-    topBgBorder.draw(ofGetWidth()/2 - topBg.getWidth()/2, 44);
-    bottomBg.draw(ofGetWidth()/2 - bottomBg.getWidth()/2, ofGetHeight() - bottomBg.height);
+    ofSetColor(255,255,255,255*alpha);
     
-    iconAltitude.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.05,5);
-    iconSpeed.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.25 ,5);
-    iconTime.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.47 ,5);
-    iconTemperature.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.665 ,5);
-    iconCoins.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.79 ,5);
+    topBg.draw(ofGetWidth()/2 - topBg.getWidth()/2, topY);
+    fuelCurrentFill.draw(ofGetWidth()/2 - topBg.getWidth()/2 + 67 + (fillTotalWidth - fuelCurrentFill.width), topY + 45);
+    healthCurrentFill.draw(ofGetWidth()/2 - topBg.getWidth()/2 + 468, topY + 45);
+    topBgBorder.draw(ofGetWidth()/2 - topBg.getWidth()/2, topY + 44);
+    bottomBg.draw(ofGetWidth()/2 - bottomBg.getWidth()/2, bottomY);
     
-    ofSetColor(255,255,255,255*0.6);
+    iconAltitude.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.05, topY+5);
+    iconSpeed.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.25 , topY+5);
+    iconTime.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.47 , topY+5);
+    iconTemperature.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.665 , topY+5);
+    iconCoins.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.79 , topY+5);
+    
+    ofSetColor(255,255,255,255*(0.6*alpha));
     ostringstream convert;
     
     string altitudeStr;
     convert << altitude << " km";
     altitudeStr = convert.str();
-    font->drawString(altitudeStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.05 + 35, 30);
+    font->drawString(altitudeStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.05 + 35, topY + 30);
     convert.str("");
     convert.clear();
     
     string speedStr;
     convert << speed << " km / h";
     speedStr = convert.str();
-    font->drawString(speedStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.25 + 35, 30);
+    font->drawString(speedStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.25 + 35, topY + 30);
     convert.str("");
     convert.clear();
     
     string timeStr;
     convert << time << " ms";
     timeStr = convert.str();
-    font->drawString(timeStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.47 + 35, 30);
+    font->drawString(timeStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.47 + 35, topY + 30);
     convert.str("");
     convert.clear();
     
     string temperatureStr;
     convert << temperature << " °C";
     temperatureStr = convert.str();
-    font->drawString(temperatureStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.665 + 35, 30);
+    font->drawString(temperatureStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.665 + 35, topY + 30);
     convert.str("");
     convert.clear();
     
     string coinsStr;
     convert << coins << " coins";
     coinsStr = convert.str();
-    font->drawString(coinsStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.79 + 35, 30);
+    font->drawString(coinsStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.79 + 35, topY + 30);
     convert.str("");
     convert.clear();
     
     ofSetColor(255,255,255,255);
-}
-
-void Display::setDefault(){
-    fuel = 100;
-    health = 100;
-    fillTotalWidth = 391;
-    fillTotalHeight = 40;
-    
-    altitude = 0;
-    speed = 150;
-    time = 0;
-    temperature = 20;
-    coins = 0;
 }

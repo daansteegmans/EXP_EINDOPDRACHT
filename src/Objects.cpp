@@ -13,22 +13,6 @@ Objects::Objects()
     Objects::setDefault();
 }
 
-void Objects::update()
-{
-    for(int i=0; i<coins.size(); i++){
-        coins[i]->shiftingX = velX;
-        coins[i]->velY = velY;
-        coins[i]->update();
-    }
-}
-
-void Objects::draw()
-{
-    for(int i=0; i<coins.size(); i++){
-        coins[i]->draw();
-    }
-}
-
 void Objects::setDefault(){
     velX = 0;
     velY = 1.5;
@@ -44,7 +28,7 @@ void Objects::setDefault(){
         coin = new Coin(0, 0, startFrame);
         
         coin->x = sin((i*4)*PI/180)*2;
-        coin->y = i*50 - 10*50;
+        coin->y = i*50 - 10*60;
         coin->sinIncrement = i*50;
         
         if(coin->x >= 0){
@@ -56,4 +40,20 @@ void Objects::setDefault(){
         coin->originalX = coin->x;
         coins.push_back(coin);
     };
+}
+
+void Objects::update()
+{
+    for(int i=0; i<coins.size(); i++){
+        coins[i]->shiftingX = velX;
+        coins[i]->velY = velY;
+        coins[i]->update();
+    }
+}
+
+void Objects::draw()
+{
+    for(int i=0; i<coins.size(); i++){
+        coins[i]->draw();
+    }
 }

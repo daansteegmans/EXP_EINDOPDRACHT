@@ -12,6 +12,7 @@ Coin::Coin(float xPos, float yPos, int startFrame)
 {
     name = "coin";
     
+    ofEnableAlphaBlending();
     img.setFrame(startFrame);
     img.loadMovie("coin/coin.gif");
     img.play();
@@ -78,7 +79,6 @@ void Coin::update()
         x = originalX + (0-x) * 30;
     }
     sinIncrement++;
-    //cout << shiftingX << endl;
 }
 
 void Coin::draw()

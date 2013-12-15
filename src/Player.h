@@ -22,12 +22,14 @@ class Player
     
         float x;
         float y;
+        float defaultY;
         ofImage img;
         float velX;
         float speed;
         float maxYSpeed;
         float friction;
         float velY;
+        bool gameHasStarted;
     
     private:
         ofSoundPlayer soundPlayer;

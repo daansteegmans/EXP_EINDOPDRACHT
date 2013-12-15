@@ -18,6 +18,14 @@ Background::Background()
     Background::setDefault();
 }
 
+void Background::setDefault(){
+    x = -(img.getWidth() - ofGetWidth())/2;
+    y = -img.getHeight() + ofGetHeight();
+    
+    speedX = 0;
+    speedY = minSpeedY;
+}
+
 void Background::update()
 {
     if(speedY > maxSpeedY){
@@ -33,12 +41,4 @@ void Background::update()
 void Background::draw()
 {
     img.draw(x,y);
-}
-
-void Background::setDefault(){
-    x = -(img.getWidth() - ofGetWidth())/2;
-    y = -img.getHeight() + ofGetHeight();
-    
-    speedX = 0;
-    speedY = minSpeedY;
 }

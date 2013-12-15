@@ -31,6 +31,7 @@ class Display
     
         float altitude;
         int speed;
+        int defaultSpeed;
         int time;
         int temperature;
         int coins;
@@ -43,6 +44,11 @@ class Display
         ofImage healthCurrentFill;
         float health;
     
+        float topY;
+        float bottomY;
+        int topDefaultY;
+        int bottomDefaultY;
+        float alpha;
     private:
         ofTrueTypeFont *font;
         int fillTotalWidth;
