@@ -14,6 +14,7 @@ Coin::Coin(float xPos, float yPos, int startFrame)
     
     ofEnableAlphaBlending();
     img.setFrame(startFrame);
+    img.setPixelFormat(OF_PIXELS_RGBA);
     img.loadMovie("coin/coin.gif");
     img.play();
     

@@ -29,6 +29,10 @@ class Display
         ofImage iconTemperature;
         ofImage iconCoins;
     
+        ofImage iconPowerUp1;
+        ofImage iconPowerUp2;
+        ofImage iconPowerUp3;
+    
         float altitude;
         int speed;
         int defaultSpeed;
@@ -51,6 +55,7 @@ class Display
         float alpha;
     private:
         ofTrueTypeFont *font;
+        ofTrueTypeFont *font2;
         int fillTotalWidth;
         int fillTotalHeight;
     

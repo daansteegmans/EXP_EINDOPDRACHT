@@ -24,8 +24,14 @@ Display::Display()
     iconTemperature.loadImage("display/icons/icon_temperature.png");
     iconCoins.loadImage("display/icons/icon_coins.png");
     
+    iconPowerUp1.loadImage("display/icons/powerup_1.png");
+    iconPowerUp2.loadImage("display/icons/powerup_2.png");
+    iconPowerUp3.loadImage("display/icons/powerup_3.png");
+    
     font = new ofTrueTypeFont();
     font->loadFont("fonts/Piston_Pressure.otf", 24);
+    font2 = new ofTrueTypeFont();
+    font2->loadFont("fonts/Piston_Pressure.otf", 28);
     
     Display::setDefault();
 }
@@ -83,6 +89,10 @@ void Display::draw()
     iconTemperature.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.665 , topY+5);
     iconCoins.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.79 , topY+5);
     
+    iconPowerUp1.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.12, bottomY + 46);
+    iconPowerUp2.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.4, bottomY + 46);
+    iconPowerUp3.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.7, bottomY + 46);
+    
     ofSetColor(255,255,255,255*(0.6*alpha));
     ostringstream convert;
     
@@ -118,6 +128,27 @@ void Display::draw()
     convert << coins << " coins";
     coinsStr = convert.str();
     font->drawString(coinsStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.79 + 35, topY + 30);
+    convert.str("");
+    convert.clear();
+    
+    string powerup1Str;
+    convert << "empty";
+    powerup1Str = convert.str();
+    font2->drawString(powerup1Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.12 + iconPowerUp1.width + 20, bottomY + 80);
+    convert.str("");
+    convert.clear();
+    
+    string powerup2Str;
+    convert << "empty";
+    powerup2Str = convert.str();
+    font2->drawString(powerup2Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.4 + iconPowerUp2.width + 20, bottomY + 80);
+    convert.str("");
+    convert.clear();
+    
+    string powerup3Str;
+    convert << "empty";
+    powerup3Str = convert.str();
+    font2->drawString(powerup3Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.7 + iconPowerUp3.width + 20, bottomY + 80);
     convert.str("");
     convert.clear();
     

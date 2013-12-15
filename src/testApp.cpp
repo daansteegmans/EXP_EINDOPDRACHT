@@ -30,6 +30,7 @@ void testApp::setupArduino(const int &version){
     arduino.sendDigitalPinMode(4, ARD_INPUT);
     arduino.sendDigitalPinMode(5, ARD_INPUT);
     
+    arduino.sendDigitalPinMode(11, ARD_OUTPUT);
     arduino.sendDigitalPinMode(12, ARD_OUTPUT);
     arduino.sendDigitalPinMode(13, ARD_OUTPUT);
 }
@@ -108,8 +109,9 @@ void testApp::update()
                     player->velY += 0.07;
                 }
         
+                arduino.sendDigital(11, ARD_HIGH);
                 arduino.sendDigital(12, ARD_HIGH);
-                 arduino.sendDigital(13, ARD_HIGH);
+                arduino.sendDigital(13, ARD_HIGH);
             }else{
                 background->speedY -= 0.05;
                 objects->velX = 0;
@@ -128,8 +130,9 @@ void testApp::update()
                     background->speedX = 3;
                     objects->velX = 2.2;
             
-                    arduino.sendDigital(13, ARD_HIGH);
-                     arduino.sendDigital(12, ARD_LOW);
+                    arduino.sendDigital(11, ARD_LOW);
+                    arduino.sendDigital(12, ARD_HIGH);
+                    arduino.sendDigital(13, ARD_LOW);
                 }
         
                 //RIGHT
@@ -137,15 +140,16 @@ void testApp::update()
                     background->speedX = -3;
                     objects->velX = -2.2;
             
-                    arduino.sendDigital(12, ARD_HIGH);
-                     arduino.sendDigital(13, ARD_LOW);
+                    arduino.sendDigital(11, ARD_LOW);
+                    arduino.sendDigital(12, ARD_LOW);
+                    arduino.sendDigital(13, ARD_HIGH);
                 }
         
                 if(arduino.getDigital(4) != 1 && arduino.getDigital(5) != 1 /*keys[356] == false && keys[358] == false*/){
                     background->speedX = 0;
             
                     arduino.sendDigital(12, ARD_LOW);
-                     arduino.sendDigital(13, ARD_LOW);
+                    arduino.sendDigital(13, ARD_LOW);
                 }
             }
     
@@ -163,6 +167,7 @@ void testApp::update()
         }
         player->update();
     }else{
+        arduino.sendDigital(11, ARD_LOW);
         arduino.sendDigital(12, ARD_LOW);
         arduino.sendDigital(13, ARD_LOW);
         
