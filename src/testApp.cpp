@@ -4,8 +4,8 @@
 //--------------------------------------------------------------
 void testApp::setup()
 {
-    ofAddListener(arduino.EInitialized, this, &testApp::setupArduino);
-    arduino.connect("/dev/tty.usbmodem1411", 57600);
+    /*ofAddListener(arduino.EInitialized, this, &testApp::setupArduino);
+    arduino.connect("/dev/tty.usbmodem1411", 57600);*/
     
     timeStarted = ofGetElapsedTimeMillis();
     //delay until animation of player + display
@@ -38,7 +38,7 @@ void testApp::setupArduino(const int &version){
 //--------------------------------------------------------------
 void testApp::update()
 {
-    arduino.update();
+    //arduino.update();
     
     if(gameOverTime == 0 && !(display->fuel<=0) && !(display->health<=0)){
         if(!player->gameHasStarted){
@@ -97,7 +97,7 @@ void testApp::update()
                 }
             }
     
-            if(arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1/*keys[356] == true && keys[358] == true*/){
+            if(/*arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1*/keys[356] == true && keys[358] == true){
                 background->speedY += 0.3;
                 background->speedX = 0;
                 objects->velX = 0;
@@ -109,9 +109,9 @@ void testApp::update()
                     player->velY += 0.07;
                 }
         
-                arduino.sendDigital(11, ARD_HIGH);
+                /*arduino.sendDigital(11, ARD_HIGH);
                 arduino.sendDigital(12, ARD_HIGH);
-                arduino.sendDigital(13, ARD_HIGH);
+                arduino.sendDigital(13, ARD_HIGH);*/
             }else{
                 background->speedY -= 0.05;
                 objects->velX = 0;
@@ -126,30 +126,31 @@ void testApp::update()
                 }
         
                 //LEFT
-                if(arduino.getDigital(4) == 1/*keys[356] == true*/){
+                if(/*arduino.getDigital(4) == 1*/ keys[356] == true){
                     background->speedX = 3;
                     objects->velX = 2.2;
             
-                    arduino.sendDigital(11, ARD_LOW);
+                    /*arduino.sendDigital(11, ARD_LOW);
                     arduino.sendDigital(12, ARD_HIGH);
-                    arduino.sendDigital(13, ARD_LOW);
+                    arduino.sendDigital(13, ARD_LOW);*/
                 }
         
                 //RIGHT
-                if(arduino.getDigital(5) == 1/*keys[358] == true*/){
+                if(/*arduino.getDigital(5) == 1*/ keys[358] == true){
                     background->speedX = -3;
                     objects->velX = -2.2;
             
-                    arduino.sendDigital(11, ARD_LOW);
+                    /*arduino.sendDigital(11, ARD_LOW);
                     arduino.sendDigital(12, ARD_LOW);
-                    arduino.sendDigital(13, ARD_HIGH);
+                    arduino.sendDigital(13, ARD_HIGH);*/
                 }
         
-                if(arduino.getDigital(4) != 1 && arduino.getDigital(5) != 1 /*keys[356] == false && keys[358] == false*/){
+                if(/*arduino.getDigital(4) != 1 && arduino.getDigital(5) != 1*/ keys[356] == false && keys[358] == false){
                     background->speedX = 0;
             
+                    /*arduino.sendDigital(11, ARD_LOW);
                     arduino.sendDigital(12, ARD_LOW);
-                    arduino.sendDigital(13, ARD_LOW);
+                    arduino.sendDigital(13, ARD_LOW);*/
                 }
             }
     
@@ -167,9 +168,9 @@ void testApp::update()
         }
         player->update();
     }else{
-        arduino.sendDigital(11, ARD_LOW);
+        /*arduino.sendDigital(11, ARD_LOW);
         arduino.sendDigital(12, ARD_LOW);
-        arduino.sendDigital(13, ARD_LOW);
+        arduino.sendDigital(13, ARD_LOW);*/
         
         player->velY = 0;
         player->velX = 0;
@@ -189,7 +190,7 @@ void testApp::update()
         }
         
         int currentTime = ofGetElapsedTimeMillis()-timeStarted;
-        if((arduino.getDigital(4) == 1 || arduino.getDigital(5) == 1) /*(keys[356] == true || keys[358] == true)*/ && currentTime > (gameOverTime+3000)){
+        if(/*(arduino.getDigital(4) == 1 || arduino.getDigital(5) == 1)*/ (keys[356] == true || keys[358] == true) && currentTime > (gameOverTime+3000)){
             gameOverTime = 0;
             
             timeStarted = currentTime + timeStarted;
