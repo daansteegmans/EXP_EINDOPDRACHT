@@ -7,6 +7,7 @@
 #include "Backgrounds.h"
 #include "Display.h"
 #include "Countdown.h"
+#include "Menu.h"
 
 #include <string.h>
 
@@ -29,6 +30,7 @@ class testApp : public ofBaseApp{
         Objects* objects;
         Display* display;
         Countdown* countDown;
+        Menu* menu;
         vector<int> keys;
         int timeStarted;
         int startDelay;

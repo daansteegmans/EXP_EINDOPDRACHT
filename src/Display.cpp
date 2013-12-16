@@ -84,10 +84,10 @@ void Display::draw()
     bottomBg.draw(ofGetWidth()/2 - bottomBg.getWidth()/2, bottomY);
     
     iconAltitude.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.05, topY+5);
-    iconSpeed.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.25 , topY+5);
-    iconTime.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.47 , topY+5);
-    iconTemperature.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.665 , topY+5);
-    iconCoins.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.79 , topY+5);
+    iconSpeed.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.22 , topY+5);
+    iconTime.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.44 , topY+5);
+    iconTemperature.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.635 , topY+5);
+    iconCoins.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.755 , topY+5);
     
     iconPowerUp1.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.12, bottomY + 46);
     iconPowerUp2.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.4, bottomY + 46);
@@ -104,49 +104,49 @@ void Display::draw()
     convert.clear();
     
     string speedStr;
-    convert << speed << " km / h";
+    convert << speed << " km / u";
     speedStr = convert.str();
-    font->drawString(speedStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.25 + 35, topY + 30);
+    font->drawString(speedStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.22 + 35, topY + 30);
     convert.str("");
     convert.clear();
     
     string timeStr;
     convert << time << " ms";
     timeStr = convert.str();
-    font->drawString(timeStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.47 + 35, topY + 30);
+    font->drawString(timeStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.44 + 35, topY + 30);
     convert.str("");
     convert.clear();
     
     string temperatureStr;
-    convert << temperature << " °C";
+    convert << temperature << " C";
     temperatureStr = convert.str();
-    font->drawString(temperatureStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.665 + 35, topY + 30);
+    font->drawString(temperatureStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.635 + 35, topY + 30);
     convert.str("");
     convert.clear();
     
     string coinsStr;
-    convert << coins << " coins";
+    convert << coins << " munten";
     coinsStr = convert.str();
-    font->drawString(coinsStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.79 + 35, topY + 30);
+    font->drawString(coinsStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.755 + 35, topY + 30);
     convert.str("");
     convert.clear();
     
     string powerup1Str;
-    convert << "empty";
+    convert << "leeg";
     powerup1Str = convert.str();
     font2->drawString(powerup1Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.12 + iconPowerUp1.width + 20, bottomY + 80);
     convert.str("");
     convert.clear();
     
     string powerup2Str;
-    convert << "empty";
+    convert << "leeg";
     powerup2Str = convert.str();
     font2->drawString(powerup2Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.4 + iconPowerUp2.width + 20, bottomY + 80);
     convert.str("");
     convert.clear();
     
     string powerup3Str;
-    convert << "empty";
+    convert << "leeg";
     powerup3Str = convert.str();
     font2->drawString(powerup3Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.7 + iconPowerUp3.width + 20, bottomY + 80);
     convert.str("");

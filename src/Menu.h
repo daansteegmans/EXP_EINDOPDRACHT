@@ -14,14 +14,19 @@
 class Menu
 {
     public:
-        Menu();
+        Menu(bool gameOver);
         void update();
         void draw();
-        ofImage img;
+    
     
     private:
-        int x;
-        int y;
+        ofTrueTypeFont* font;
+        bool isGameOver;
+        ofImage imgTitle;
+        ofImage imgMessageBg;
+        ofImage imgStatsBg;
+        ofImage imgReplayBg;
+    
     
 };
 

@@ -30,6 +30,7 @@ class Player
         float friction;
         float velY;
         bool gameHasStarted;
+        bool gameOver;
     
     private:
         ofSoundPlayer soundPlayer;

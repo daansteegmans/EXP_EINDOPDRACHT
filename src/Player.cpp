@@ -20,7 +20,7 @@ Player::Player()
 void Player::update()
 {
     x += velX;
-    if(gameHasStarted){
+    if(gameHasStarted && !gameOver){
         if(velY > maxYSpeed){
             velY = maxYSpeed;
         }else if(velY < -(maxYSpeed*1.6)){
@@ -29,10 +29,14 @@ void Player::update()
     }
     y -= velY;
     velX *= friction;
-    if(velY > 0 && gameHasStarted){
+    if(velY > 0 && gameHasStarted && !gameOver){
         velY *= friction;
     }
     velY = round(velY*100)/100;
+    
+    if(gameOver){
+        if(velY < 6)velY += 0.1;
+    }
 }
 
 void Player::draw()
@@ -42,14 +46,6 @@ void Player::draw()
         y = ofGetHeight() - img.getHeight() - 10;
         velY = 0;
     }*/
-    
-    /*ofPushMatrix();
-    ofTranslate(img.width/2, img.height/2, 0);//move pivot to centre
-    ofRotate(ofGetFrameNum() * 10, 0, 0, 1);//rotate from centre
-    ofPushMatrix();
-    img.draw(-img.width/2,-img.height/2);//move back by the centre offset
-    ofPopMatrix();
-    ofPopMatrix();*/
     
     x += velX;
     y -= velY;
@@ -66,6 +62,7 @@ void Player::setDefault(){
     y = ofGetHeight() - img.getHeight();
     defaultY = ((ofGetHeight() - img.getHeight()) / 2) + 70;
     gameHasStarted = false;
+    gameOver = false;
     
     // move sound
     // soundPlayer.loadSound("sounds/move.mp3");

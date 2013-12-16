@@ -102,7 +102,8 @@ void testApp::update()
                 background->speedX = 0;
                 objects->velX = 0;
                 objects->velY = 4.5;
-                display->fuel-=0.08;
+                //display->fuel-=0.08;
+                display->fuel-=0.2;
                 display->speed = round(display->defaultSpeed*2);
         
                 if(player->y > ((ofGetHeight() - player->img.getHeight()) / 2) - 50){
@@ -166,27 +167,28 @@ void testApp::update()
         }else{
             background->update();
         }
-        player->update();
     }else{
         /*arduino.sendDigital(11, ARD_LOW);
         arduino.sendDigital(12, ARD_LOW);
         arduino.sendDigital(13, ARD_LOW);*/
         
-        player->velY = 0;
+        //player->velY = 0;
         player->velX = 0;
         
         if(display->topY > -(display->topBg.height)){
-            display->topY--;
+            display->topY-=0.5;
         }
         if(display->bottomY < ofGetHeight()){
-            display->bottomY++;
+            display->bottomY+=0.5;
         }
         if(display->alpha > 0){
-            display->alpha -= 0.08;
+            display->alpha -= 0.04;
         }
         
         if(gameOverTime == 0){
             gameOverTime = ofGetElapsedTimeMillis()-timeStarted;
+            player->gameOver = true;
+            menu = new Menu(true);
         }
         
         int currentTime = ofGetElapsedTimeMillis()-timeStarted;
@@ -200,16 +202,22 @@ void testApp::update()
             display->setDefault();
             countDown->setDefault(round(controlDelay/1000));
         }
+        
+        menu->update();
     }
+    if(player->y > -player->img.height)player->update();
 }
 
 //--------------------------------------------------------------
 void testApp::draw()
 {
     background->draw();
-    player->draw();
+    if(player->y > -player->img.height)player->draw();
     objects->draw();
     display->draw();
+    if(gameOverTime != 0){
+        menu->draw();
+    }
     if(!player->gameHasStarted){
         countDown->draw();
     }
