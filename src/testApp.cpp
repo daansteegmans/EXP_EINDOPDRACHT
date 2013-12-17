@@ -22,14 +22,18 @@ void testApp::setup()
     
     keys.resize(2);
     gameOverTime = 0;
+    
+    causeOfGameOver = "";
 }
 
 void testApp::setupArduino(const int &version){
     ofRemoveListener(arduino.EInitialized, this, &testApp::setupArduino);
     ofLog() << "setup arduino " << version;
+    arduino.sendDigitalPinMode(3, ARD_INPUT);
     arduino.sendDigitalPinMode(4, ARD_INPUT);
     arduino.sendDigitalPinMode(5, ARD_INPUT);
     
+    arduino.sendDigitalPinMode(10, ARD_OUTPUT);
     arduino.sendDigitalPinMode(11, ARD_OUTPUT);
     arduino.sendDigitalPinMode(12, ARD_OUTPUT);
     arduino.sendDigitalPinMode(13, ARD_OUTPUT);
@@ -42,6 +46,8 @@ void testApp::update()
     
     if(gameOverTime == 0 && !(display->fuel<=0) && !(display->health<=0)){
         if(!player->gameHasStarted){
+            
+            
             //countdown
             if(ofGetElapsedTimeMillis() - timeStarted > (countDown->currentCount+1)*1000){
                 int newCurrentCount = countDown->currentCount+1;
@@ -81,7 +87,6 @@ void testApp::update()
                 player->gameHasStarted = true;
             }
         } else {
-        
             display->time = ofGetElapsedTimeMillis()-timeStarted;
     
             for(int i=0; i<objects->coins.size(); i++){
@@ -97,13 +102,13 @@ void testApp::update()
                 }
             }
     
-            if(/*arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1*/keys[356] == true && keys[358] == true){
+            if(/*arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1*/ keys[356] == true && keys[358] == true){
                 background->speedY += 0.3;
                 background->speedX = 0;
                 objects->velX = 0;
                 objects->velY = 4.5;
                 //display->fuel-=0.08;
-                display->fuel-=0.2;
+                display->fuel-=0.7;
                 display->speed = round(display->defaultSpeed*2);
         
                 if(player->y > ((ofGetHeight() - player->img.getHeight()) / 2) - 50){
@@ -172,7 +177,12 @@ void testApp::update()
         arduino.sendDigital(12, ARD_LOW);
         arduino.sendDigital(13, ARD_LOW);*/
         
-        //player->velY = 0;
+        if(display->fuel <= 0 && causeOfGameOver == ""){
+            causeOfGameOver = "fuel";
+        }else if(display->health <= 0 && causeOfGameOver == ""){
+            causeOfGameOver = "health";
+        }
+        
         player->velX = 0;
         
         if(display->topY > -(display->topBg.height)){
@@ -188,12 +198,13 @@ void testApp::update()
         if(gameOverTime == 0){
             gameOverTime = ofGetElapsedTimeMillis()-timeStarted;
             player->gameOver = true;
-            menu = new Menu(true);
+            menu = new Menu(true, causeOfGameOver);
         }
         
         int currentTime = ofGetElapsedTimeMillis()-timeStarted;
         if(/*(arduino.getDigital(3) == 1 || arduino.getDigital(4) == 1 || arduino.getDigital(5) == 1)*/ (keys[356] == true || keys[358] == true) && currentTime > (gameOverTime+3000)){
             gameOverTime = 0;
+            causeOfGameOver = "";
             
             timeStarted = currentTime + timeStarted;
             background->setDefault();
@@ -213,10 +224,11 @@ void testApp::draw()
 {
     background->draw();
     if(player->y > -player->img.height)player->draw();
-    objects->draw();
     display->draw();
     if(gameOverTime != 0){
         menu->draw();
+    }else{
+        objects->draw();
     }
     if(!player->gameHasStarted){
         countDown->draw();

@@ -36,4 +36,5 @@ class testApp : public ofBaseApp{
         int startDelay;
         int controlDelay;
         int gameOverTime;
+        string causeOfGameOver;
 };

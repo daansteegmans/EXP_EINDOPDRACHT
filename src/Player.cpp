@@ -12,7 +12,7 @@
 
 Player::Player()
 {
-    img.loadImage("player/player.png");
+    img.loadImage("player/player2.png");
     
     Player::setDefault();
 }
