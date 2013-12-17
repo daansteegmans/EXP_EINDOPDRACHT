@@ -43,8 +43,9 @@ void Display::setDefault(){
     fillTotalHeight = 40;
     
     altitude = 0;
-    defaultSpeed = 150;
-    speed = defaultSpeed;
+    defaultSpeed = 48;
+    speed = 0;
+    maxSpeed = speed;
     time = 0;
     temperature = 20;
     coins = 0;
@@ -71,6 +72,10 @@ void Display::update()
     healthCurrentFill.cropFrom(healthOriginalFill, 0, 0, healthNewWidth, fillTotalHeight);
     
     topBg.update();
+    
+    if(maxSpeed < speed){
+        maxSpeed = speed;
+    }
 }
 
 void Display::draw()

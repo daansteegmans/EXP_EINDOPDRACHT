@@ -46,12 +46,14 @@ void testApp::update()
     
     if(gameOverTime == 0 && !(display->fuel<=0) && !(display->health<=0)){
         if(!player->gameHasStarted){
-            
-            
             //countdown
             if(ofGetElapsedTimeMillis() - timeStarted > (countDown->currentCount+1)*1000){
                 int newCurrentCount = countDown->currentCount+1;
                 countDown->updateCurrentCount(newCurrentCount);
+            }
+            
+            if(display->speed < display->defaultSpeed){
+                display->speed = round((display->speed+0.3)*10)/10;
             }
             
             if(ofGetElapsedTimeMillis() > timeStarted+startDelay){
@@ -109,7 +111,7 @@ void testApp::update()
                 objects->velY = 4.5;
                 //display->fuel-=0.08;
                 display->fuel-=0.7;
-                display->speed = round(display->defaultSpeed*2);
+                display->speed = round((background->speedY*10)*2);
         
                 if(player->y > ((ofGetHeight() - player->img.getHeight()) / 2) - 50){
                     player->velY += 0.07;
@@ -123,8 +125,12 @@ void testApp::update()
                 objects->velX = 0;
                 objects->velY = 1.5;
                 display->fuel-=0.02;
-                display->speed = display->defaultSpeed;
-        
+                if(round(background->speedY*50) < (background->maxSpeedY*10)*2){
+                    display->speed = round(background->speedY*50);
+                }else{
+                    display->speed--;
+                }
+                
                 if(player->y < player->defaultY && (player->y - player->velY) <= player->defaultY){
                     player->velY -= 0.1;
                 } else {
@@ -160,6 +166,8 @@ void testApp::update()
                 }
             }
     
+            display->altitude += round(background->speedY/60);
+            cout << background->speedY << endl;
             objects->update();
             display->update();
         }
@@ -198,7 +206,11 @@ void testApp::update()
         if(gameOverTime == 0){
             gameOverTime = ofGetElapsedTimeMillis()-timeStarted;
             player->gameOver = true;
-            menu = new Menu(true, causeOfGameOver);
+            menu = new Menu(true, causeOfGameOver, display->altitude, display->maxSpeed, display->time, display->coins);
+        }
+        
+        if(menu->alpha < 1.9){
+            menu->alpha += 0.03;
         }
         
         int currentTime = ofGetElapsedTimeMillis()-timeStarted;
@@ -224,12 +236,12 @@ void testApp::draw()
 {
     background->draw();
     if(player->y > -player->img.height)player->draw();
-    display->draw();
     if(gameOverTime != 0){
         menu->draw();
     }else{
         objects->draw();
     }
+    display->draw();
     if(!player->gameHasStarted){
         countDown->draw();
     }

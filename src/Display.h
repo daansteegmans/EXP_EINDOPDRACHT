@@ -34,11 +34,12 @@ class Display
         ofImage iconPowerUp3;
     
         float altitude;
-        int speed;
+        float speed;
         int defaultSpeed;
         int time;
         int temperature;
         int coins;
+        int maxSpeed;
     
         ofImage fuelOriginalFill;
         ofImage fuelCurrentFill;

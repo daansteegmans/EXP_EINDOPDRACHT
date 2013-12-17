@@ -8,11 +8,23 @@
 
 #include "Menu.h"
 
-Menu::Menu(bool gameOver, string causeOfGameOver)
+Menu::Menu(bool gameOver, string causeOfGameOver, int displayHeight, int displayMaxSpeed, int displayTime, int displayCoins)
 {
     isGameOver = gameOver;
     cause = causeOfGameOver;
-    cout << "causeOfGameOver: " << causeOfGameOver << "cause: " << cause << endl;
+    alpha = 0;
+    
+    height = displayHeight;
+    currentDisplayedHeight = 0;
+    
+    speed = displayMaxSpeed;
+    currentDisplayedSpeed = 0;
+    
+    time = displayTime;
+    currentDisplayedTime = 0;
+    
+    coins = displayCoins;
+    currentDisplayedCoins = 0;
     
     font = new ofTrueTypeFont();
     font->loadFont("fonts/Piston_Pressure.otf", 16);
@@ -30,39 +42,122 @@ Menu::Menu(bool gameOver, string causeOfGameOver)
         iconSpeed.loadImage("menu/icons/icon_speed.png");
         iconTime.loadImage("menu/icons/icon_time.png");
         iconCoins.loadImage("menu/icons/icon_coins.png");
+        
+        imgButton1.loadImage("menu/buttons/btn_red_left.png");
+        imgButton2.loadImage("menu/buttons/btn_red_right.png");
+        imgButton3.loadImage("menu/buttons/btn_green.png");
     }
 }
 
 void Menu::update()
 {
+    alpha = round(alpha*100)/100;
     
+    int diff;
+    int plus;
+    
+    if(height != currentDisplayedHeight){
+        diff = abs(height - currentDisplayedHeight);
+        plus = diff>1000000? 125000 : diff>100000? 12500 : diff>10000? 1250 : diff>1000? 125 : diff>100? 12 : diff>10? 2 : 1;
+        plus = height>currentDisplayedHeight? plus : -plus;
+        currentDisplayedHeight+=plus;
+    }
+    
+    if(speed != currentDisplayedSpeed){
+        diff = abs(speed - currentDisplayedSpeed);
+        plus = diff>1000000? 62500 : diff>100000? 6250 : diff>10000? 625 : diff>1000? 62 : diff>100? 6 : diff>10? 2 : 1;
+        plus = speed>currentDisplayedSpeed? plus : -plus;
+        currentDisplayedSpeed+=plus;
+    }
+    
+    if(time != currentDisplayedTime){
+        diff = abs(time - currentDisplayedTime);
+        plus = diff>1000000? 125000 : diff>100000? 12500 : diff>10000? 1250 : diff>1000? 125 : diff>100? 12 : diff>10? 2 : 1;
+        plus = time>currentDisplayedTime? plus : -plus;
+        currentDisplayedTime+=plus;
+    }
+    
+    if(coins != currentDisplayedCoins){
+        diff = abs(coins - currentDisplayedCoins);
+        plus = diff>1000000? 31250 : diff>100000? 3125 : diff>10000? 312 : diff>1000? 31 : diff>100? 3 : diff>10? 2 : 1;
+        plus = coins>currentDisplayedCoins? plus : -plus;
+        currentDisplayedCoins+=plus;
+    }
 }
 
 void Menu::draw()
 {
     if(isGameOver){
+        ofSetColor(255, 255, 255, 255*alpha);
         imgTitle.draw((ofGetWidth() - imgTitle.width)/2,ofGetHeight()*0.15);
         
-        imgMessageBg.draw((ofGetWidth() - imgMessageBg.width)/2,ofGetHeight()*0.3);
-        imgStatsBg.draw((ofGetWidth() - imgStatsBg.width)/2,ofGetHeight()*0.5);
-        imgReplayBg.draw((ofGetWidth() - imgReplayBg.width)/2,ofGetHeight()*0.7);
-        
-        ofSetColor(212, 223, 241);
-        if(cause == "fuel"){
-            font->drawString("De brandstof is op. Pak volgende keer wat meer jerrycans op.", (ofGetWidth() - imgMessageBg.width)/2 + 77, ofGetHeight()*0.3 + 82);
-            iconMessageNoFuel.draw((ofGetWidth() - imgMessageBg.width)/2 + 27, ofGetHeight()*0.3 + 56);
-        } else if(cause == "health"){
-            font->drawString("Je verloor al je leven. Pak volgende keer wat leven op.", (ofGetWidth() - imgMessageBg.width)/2 + 107, ofGetHeight()*0.3 + 82);
-            iconMessageNoHealth.draw((ofGetWidth() - imgMessageBg.width)/2 + 57, ofGetHeight()*0.3 + 56);
+        if(alpha - 0.3 > 0){
+            ofSetColor(255, 255, 255, 255*(alpha - 0.3));
+            imgMessageBg.draw((ofGetWidth() - imgMessageBg.width)/2,ofGetHeight()*0.3);
+            ofSetColor(212, 223, 241, 255*(alpha - 0.3));
+            if(cause == "fuel"){
+                font->drawString("De brandstof is op. Pak volgende keer wat meer jerrycans op.", (ofGetWidth() - imgMessageBg.width)/2 + 77, ofGetHeight()*0.3 + 82);
+                ofSetColor(255, 255, 255, 255*(alpha - 0.3));
+                iconMessageNoFuel.draw((ofGetWidth() - imgMessageBg.width)/2 + 27, ofGetHeight()*0.3 + 56);
+            } else if(cause == "health"){
+                font->drawString("Je verloor al je leven. Pak volgende keer wat leven op.", (ofGetWidth() - imgMessageBg.width)/2 + 107, ofGetHeight()*0.3 + 82);
+                ofSetColor(255, 255, 255, 255*(alpha - 0.3));
+                iconMessageNoHealth.draw((ofGetWidth() - imgMessageBg.width)/2 + 57, ofGetHeight()*0.3 + 56);
+            }
         }
         
-        iconHeight.draw((ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.043, ofGetHeight()*0.5 + 63);
-        iconSpeed.draw((ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.23, ofGetHeight()*0.5 + 63);
-        iconTime.draw((ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.47, ofGetHeight()*0.5 + 63);
-        iconCoins.draw((ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.72, ofGetHeight()*0.5 + 63);
+        if(alpha - 0.6 > 0){
+            ofSetColor(255, 255, 255, 255*(alpha - 0.6));
+            imgStatsBg.draw((ofGetWidth() - imgStatsBg.width)/2,ofGetHeight()*0.5);
+            
+            iconHeight.draw((ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.043, ofGetHeight()*0.5 + 63);
+            iconSpeed.draw((ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.23, ofGetHeight()*0.5 + 63);
+            iconTime.draw((ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.47, ofGetHeight()*0.5 + 63);
+            iconCoins.draw((ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.72, ofGetHeight()*0.5 + 63);
+            
+            ofSetColor(212, 223, 241, 255*(alpha - 0.6));
+            ostringstream convert;
+            
+            string heightStr;
+            convert << currentDisplayedHeight << " km";
+            heightStr = convert.str();
+            font->drawString(heightStr, (ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.09, ofGetHeight()*0.5 + 83);
+            convert.str("");
+            convert.clear();
+            
+            string speedStr;
+            convert << currentDisplayedSpeed << " km / u";
+            speedStr = convert.str();
+            font->drawString(speedStr, (ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.28, ofGetHeight()*0.5 + 83);
+            convert.str("");
+            convert.clear();
+            
+            string timeStr;
+            convert << currentDisplayedTime << " ms";
+            timeStr = convert.str();
+            font->drawString(timeStr, (ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.52, ofGetHeight()*0.5 + 83);
+            convert.str("");
+            convert.clear();
+            
+            string coinsStr;
+            convert << currentDisplayedCoins << " coins";
+            coinsStr = convert.str();
+            font->drawString(coinsStr, (ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.77, ofGetHeight()*0.5 + 83);
+            convert.str("");
+            convert.clear();
+        }
         
-        font->drawString("De brandstof is op. Pak volgende keer wat meer jerrycans op.", (ofGetWidth() - imgStatsBg.width)/2 + 20, ofGetHeight()*0.5 + 85);
-        font->drawString("Duw op      ,      of      om opnieuw te beginnen.", (ofGetWidth() - imgReplayBg.width)/2 + 100, ofGetHeight()*0.7 + 85);
+        if(alpha-0.9 > 0){
+            ofSetColor(255, 255, 255, 255*(alpha - 0.9));
+            imgReplayBg.draw((ofGetWidth() - imgReplayBg.width)/2,ofGetHeight()*0.7);
+        
+            imgButton1.draw((ofGetWidth() - imgReplayBg.width)/2 + imgReplayBg.width*0.255, ofGetHeight()*0.7 + imgReplayBg.height*0.47);
+            imgButton2.draw((ofGetWidth() - imgReplayBg.width)/2 + imgReplayBg.width*0.34, ofGetHeight()*0.7 + imgReplayBg.height*0.47);
+            imgButton3.draw((ofGetWidth() - imgReplayBg.width)/2 + imgReplayBg.width*0.455, ofGetHeight()*0.7 + imgReplayBg.height*0.47);
+        
+            ofSetColor(212, 223, 241, 255*(alpha - 0.9));
+            font->drawString("Duw op      ,      of      om opnieuw te beginnen.", (ofGetWidth() - imgReplayBg.width)/2 + 100, ofGetHeight()*0.7 + 83);
+        }
         ofSetColor(255, 255, 255);
     }
 }

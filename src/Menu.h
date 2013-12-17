@@ -14,15 +14,25 @@
 class Menu
 {
     public:
-        Menu(bool gameOver, string causeOfGameOver);
+        Menu(bool gameOver, string causeOfGameOver, int displayHeight, int displayMaxSpeed, int displayTime, int displayCoins);
         void update();
         void draw();
-    
+        float alpha;
     
     private:
         ofTrueTypeFont* font;
         bool isGameOver;
         string cause;
+    
+        int height;
+        int currentDisplayedHeight;
+        int speed;
+        int currentDisplayedSpeed;
+        int time;
+        int currentDisplayedTime;
+        int coins;
+        int currentDisplayedCoins;
+    
         ofImage imgTitle;
     
         ofImage imgMessageBg;
@@ -36,8 +46,9 @@ class Menu
         ofImage iconCoins;
     
         ofImage imgReplayBg;
-    
-    
+        ofImage imgButton1;
+        ofImage imgButton2;
+        ofImage imgButton3;
 };
 
 
