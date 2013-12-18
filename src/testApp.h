@@ -18,6 +18,7 @@ class testApp : public ofBaseApp{
 		void update();
 		void draw();
         void setupArduino(const int & version);
+        void startUpBlink();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -36,5 +37,15 @@ class testApp : public ofBaseApp{
         int startDelay;
         int controlDelay;
         int gameOverTime;
+        int coinsGroupsMade;
         string causeOfGameOver;
+    
+        bool blinkOn;
+        bool startBlinking;
+        int numBlinks;
+        int timeArduinoInitialized;
+    
+        ofSoundPlayer backgroundMusic;
+        bool bgMusicIsPlaying;
+        ofSoundPlayer coinSound;
 };

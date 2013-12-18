@@ -23,7 +23,7 @@ class Player
         float x;
         float y;
         float defaultY;
-        ofImage img;
+        float minY;
         float velX;
         float speed;
         float maxYSpeed;
@@ -31,6 +31,15 @@ class Player
         float velY;
         bool gameHasStarted;
         bool gameOver;
+        float alpha;
+    
+        ofImage fullImg;
+        ofImage img;
+        int imageWidth;
+        float currentSpriteSheetFrame;
+        int numFrames;
+    
+        string action;
     
     private:
         ofSoundPlayer soundPlayer;

@@ -11,13 +11,14 @@
 
 #include "Player.h"
 #include "Coin.h"
+#include "Powerup.h"
 
 class Functions
 {
     public:
         Functions();
         string checkCollision(Player *objA, Coin *objB);
-    
+        string checkCollisionPowerup(Player *objA, Powerup *objB);
     private:
 };
 

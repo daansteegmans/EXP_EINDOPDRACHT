@@ -8,7 +8,7 @@
 
 #include "Menu.h"
 
-Menu::Menu(bool gameOver, string causeOfGameOver, int displayHeight, int displayMaxSpeed, int displayTime, int displayCoins)
+Menu::Menu(bool gameOver, string causeOfGameOver, int displayHeight, int displayMaxSpeed, int displayTime, int displayCoins, int displayTotalCoins)
 {
     isGameOver = gameOver;
     cause = causeOfGameOver;
@@ -25,9 +25,15 @@ Menu::Menu(bool gameOver, string causeOfGameOver, int displayHeight, int display
     
     coins = displayCoins;
     currentDisplayedCoins = 0;
+    totalCoins = displayTotalCoins;
+    
+    totalScore = height*2 + speed*2 + time/100 + coins*200;
+    currentDisplayedScore = 0;
     
     font = new ofTrueTypeFont();
     font->loadFont("fonts/Piston_Pressure.otf", 16);
+    font2 = new ofTrueTypeFont();
+    font2->loadFont("fonts/Piston_Pressure.otf", 28);
     
     if(isGameOver){
         imgTitle.loadImage("menu/gameover.png");
@@ -55,6 +61,13 @@ void Menu::update()
     
     int diff;
     int plus;
+    
+    if(totalScore != currentDisplayedScore){
+        diff = abs(totalScore - currentDisplayedScore);
+        plus = diff>1000000? 250000 : diff>100000? 25000 : diff>10000? 2500 : diff>1000? 250 : diff>100? 25 : diff>10? 2 : 1;
+        plus = totalScore>currentDisplayedScore? plus : -plus;
+        currentDisplayedScore+=plus;
+    }
     
     if(height != currentDisplayedHeight){
         diff = abs(height - currentDisplayedHeight);
@@ -115,8 +128,18 @@ void Menu::draw()
             iconTime.draw((ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.47, ofGetHeight()*0.5 + 63);
             iconCoins.draw((ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.72, ofGetHeight()*0.5 + 63);
             
-            ofSetColor(212, 223, 241, 255*(alpha - 0.6));
+            ofSetColor(255,255,255,255*(alpha-0.6));
             ostringstream convert;
+            
+            string scoreStr;
+            convert << currentDisplayedScore;
+            scoreStr = convert.str();
+            int scoreStrLen = scoreStr.length();
+            font2->drawString(scoreStr, (ofGetWidth() - scoreStrLen*20)/2, ofGetHeight()*0.53 + 13);
+            convert.str("");
+            convert.clear();
+            
+            ofSetColor(212, 223, 241, 255*(alpha - 0.6));
             
             string heightStr;
             convert << currentDisplayedHeight << " km";
@@ -140,7 +163,7 @@ void Menu::draw()
             convert.clear();
             
             string coinsStr;
-            convert << currentDisplayedCoins << " coins";
+            convert << currentDisplayedCoins << " / " << totalCoins << " munten";
             coinsStr = convert.str();
             font->drawString(coinsStr, (ofGetWidth() - imgStatsBg.width)/2 + imgStatsBg.width*0.77, ofGetHeight()*0.5 + 83);
             convert.str("");

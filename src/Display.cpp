@@ -11,12 +11,21 @@
 Display::Display()
 {
     topBg.loadImage("display/display_top.png");
-    topBgBorder.loadImage("display/display_top_border.png");
     bottomBg.loadImage("display/display_bottom.png");
     fuelCurrentFill.loadImage("display/fuel.png");
     healthCurrentFill.loadImage("display/health.png");
-    fuelOriginalFill = fuelCurrentFill;
-    healthOriginalFill = healthCurrentFill;
+    
+    fuelBorderNormal.loadImage("display/fuel_border_normal.png");
+    fuelBorderHightlight.loadImage("display/fuel_border_highlight.png");
+    
+    fuelImageNormal.loadImage("display/fuel_normal.png");
+    fuelImageHighlight.loadImage("display/fuel_highlight.png");
+    
+    healthBorderNormal.loadImage("display/health_border_normal.png");
+    healthBorderHightlight.loadImage("display/health_border_highlight.png");
+    
+    healthImageNormal.loadImage("display/health_normal.png");
+    healthImageHighlight.loadImage("display/health_highlight.png");
     
     iconAltitude.loadImage("display/icons/icon_height.png");
     iconSpeed.loadImage("display/icons/icon_speed.png");
@@ -24,9 +33,9 @@ Display::Display()
     iconTemperature.loadImage("display/icons/icon_temperature.png");
     iconCoins.loadImage("display/icons/icon_coins.png");
     
-    iconPowerUp1.loadImage("display/icons/powerup_1.png");
-    iconPowerUp2.loadImage("display/icons/powerup_2.png");
-    iconPowerUp3.loadImage("display/icons/powerup_3.png");
+    iconEmpty1.loadImage("display/icons/powerup_1.png");
+    iconEmpty2.loadImage("display/icons/powerup_2.png");
+    iconEmpty3.loadImage("display/icons/powerup_3.png");
     
     font = new ofTrueTypeFont();
     font->loadFont("fonts/Piston_Pressure.otf", 24);
@@ -57,6 +66,28 @@ void Display::setDefault(){
     bottomDefaultY = ofGetHeight() - bottomBg.height;
     alpha = 0;
     
+    fuelStartedBlinkingTime = 0;
+    numFuelBlinks = 0;
+    currentShownFuel = "normal";
+    
+    healthStartedBlinkingTime = 0;
+    numHealthBlinks = 0;
+    currentShownHealth = "normal";
+    
+    fuelOriginalFill = fuelCurrentFill;
+    fuelBorderShown = fuelBorderNormal;
+    fuelImageShown = fuelImageNormal;
+    
+    healthOriginalFill = healthCurrentFill;
+    healthBorderShown = healthBorderNormal;
+    healthImageShown = healthImageNormal;
+    
+    iconPowerUp1 = iconEmpty1;
+    iconPowerUp2 = iconEmpty2;
+    iconPowerUp3 = iconEmpty3;
+    
+    maxPowerups = 3;
+    
     Display::update();
     Display::draw();
 }
@@ -74,6 +105,48 @@ void Display::update()
     
     topBg.update();
     
+    if(fuel < 25){
+        if(fuelStartedBlinkingTime == 0){
+            fuelStartedBlinkingTime = ofGetElapsedTimeMillis();
+        }
+        if(ofGetElapsedTimeMillis() > fuelStartedBlinkingTime + 200*numFuelBlinks && fuelStartedBlinkingTime!=0){
+            if(currentShownFuel == "normal"){
+                fuelImageShown = fuelImageHighlight;
+                fuelBorderShown = fuelBorderHightlight;
+                currentShownFuel = "highlight";
+            }else{
+                fuelImageShown = fuelImageNormal;
+                fuelBorderShown = fuelBorderNormal;
+                currentShownFuel = "normal";
+            }
+            numFuelBlinks++;
+        }
+    }else{
+        fuelStartedBlinkingTime = 0;
+        numFuelBlinks = 0;
+    }
+    
+    if(health < 25){
+        if(healthStartedBlinkingTime == 0){
+            healthStartedBlinkingTime = ofGetElapsedTimeMillis();
+        }
+        if(ofGetElapsedTimeMillis() > healthStartedBlinkingTime + 200*numHealthBlinks && healthStartedBlinkingTime!=0){
+            if(currentShownHealth == "normal"){
+                healthImageShown = healthImageHighlight;
+                healthBorderShown = healthBorderHightlight;
+                currentShownHealth = "highlight";
+            }else{
+                healthImageShown = healthImageNormal;
+                healthBorderShown = healthBorderNormal;
+                currentShownHealth = "normal";
+            }
+            numHealthBlinks++;
+        }
+    }else{
+        healthStartedBlinkingTime = 0;
+        numHealthBlinks = 0;
+    }
+    
     if(maxSpeed < speed)maxSpeed = speed;
     if(temperature < minTemperature) temperature = minTemperature;
     temperature = round(temperature*10)/10;
@@ -86,8 +159,13 @@ void Display::draw()
     topBg.draw(ofGetWidth()/2 - topBg.getWidth()/2, topY);
     fuelCurrentFill.draw(ofGetWidth()/2 - topBg.getWidth()/2 + 67 + (fillTotalWidth - fuelCurrentFill.width), topY + 45);
     healthCurrentFill.draw(ofGetWidth()/2 - topBg.getWidth()/2 + 468, topY + 45);
-    topBgBorder.draw(ofGetWidth()/2 - topBg.getWidth()/2, topY + 44);
     bottomBg.draw(ofGetWidth()/2 - bottomBg.getWidth()/2, bottomY);
+    
+    fuelBorderShown.draw(ofGetWidth()/2 - fuelBorderShown.width - 5, topY + topBg.height/2 + 3);
+    healthBorderShown.draw(ofGetWidth()/2 + 5, topY + topBg.height/2 + 3);
+    
+    fuelImageShown.draw(ofGetWidth()/2 - fuelImageShown.width - 5, topY + topBg.height + 5);
+    healthImageShown.draw(ofGetWidth()/2 + 5, topY + topBg.height + 5);
     
     iconAltitude.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.05, topY+5);
     iconSpeed.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.22 , topY+5);

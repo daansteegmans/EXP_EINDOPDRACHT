@@ -11,6 +11,7 @@
 
 #include "ofMain.h"
 #include "Coin.h"
+#include "Powerup.h"
 
 class Objects
 {
@@ -19,12 +20,19 @@ class Objects
         void update();
         void draw();
         void setDefault();
+        void makeCoinGroup(int offsetX);
+        void makePowerup(int offsetX);
         float velX;
         float velY;
+    
         vector<Coin *> coins;
+        int numTotalCoins;
+    
+        vector<Powerup *> powerups;
     
     private:
         Coin* coin;
+        Powerup* powerup;
     
 };
 

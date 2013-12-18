@@ -24,8 +24,11 @@ class Background
         float speedY;
         float speedX;
         int maxSpeedY;
+        int manoeuvreSpeedY;
         int minSpeedY;
         ofImage img;
+        ofImage img2;
+        bool drawImage2;
     
     private:
         

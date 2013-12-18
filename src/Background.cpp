@@ -10,9 +10,11 @@
 
 Background::Background()
 {    
-    img.loadImage("background/space.jpg");
+    img.loadImage("background/space3.jpg");
+    img2.loadImage("background/space2.jpg");
     
     maxSpeedY = 5;
+    manoeuvreSpeedY = 3;
     minSpeedY = 1;
     
     Background::setDefault();
@@ -20,10 +22,11 @@ Background::Background()
 
 void Background::setDefault(){
     x = -(img.getWidth() - ofGetWidth())/2;
-    y = -img.getHeight() + ofGetHeight();
+    y = -img.getHeight()*2 + ofGetHeight();
     
     speedX = 0;
     speedY = minSpeedY;
+    drawImage2 = false;
 }
 
 void Background::update()
@@ -36,9 +39,17 @@ void Background::update()
     
     x += speedX;
     y += speedY;
+    y = round(y);
+    
+    if(y+img.getHeight() >= -0.1){
+        drawImage2 = true;
+    }
 }
 
 void Background::draw()
 {
-    img.draw(x,y);
+    img.draw(x,y+img.getHeight());
+    if(drawImage2){
+       img2.draw(x,y);
+    }
 }

@@ -20,8 +20,29 @@ class Display
         void setDefault();
 
         ofImage topBg;
-        ofImage topBgBorder;
         ofImage bottomBg;
+    
+        ofImage fuelBorderNormal;
+        ofImage fuelBorderHightlight;
+        ofImage fuelBorderShown;
+    
+        ofImage fuelImageNormal;
+        ofImage fuelImageHighlight;
+        ofImage fuelImageShown;
+        int fuelStartedBlinkingTime;
+        int numFuelBlinks;
+        string currentShownFuel;
+    
+        ofImage healthBorderNormal;
+        ofImage healthBorderHightlight;
+        ofImage healthBorderShown;
+    
+        ofImage healthImageNormal;
+        ofImage healthImageHighlight;
+        ofImage healthImageShown;
+        int healthStartedBlinkingTime;
+        int numHealthBlinks;
+        string currentShownHealth;
     
         ofImage iconAltitude;
         ofImage iconSpeed;
@@ -29,9 +50,15 @@ class Display
         ofImage iconTemperature;
         ofImage iconCoins;
     
+        ofImage iconEmpty1;
         ofImage iconPowerUp1;
+        ofImage iconEmpty2;
         ofImage iconPowerUp2;
+        ofImage iconEmpty3;
         ofImage iconPowerUp3;
+    
+        vector<string> powerupNames;
+        int maxPowerups;
     
         float altitude;
         float speed;
@@ -55,6 +82,7 @@ class Display
         int topDefaultY;
         int bottomDefaultY;
         float alpha;
+    
     private:
         ofTrueTypeFont *font;
         ofTrueTypeFont *font2;

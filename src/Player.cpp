@@ -12,7 +12,9 @@
 
 Player::Player()
 {
-    img.loadImage("player/player2.png");
+    fullImg.loadImage("player/player.png");
+    imageWidth = 130;
+    numFrames = 5;
     
     Player::setDefault();
 }
@@ -37,19 +39,39 @@ void Player::update()
     if(gameOver){
         if(velY < 6)velY += 0.1;
     }
+    
+    if(y < minY && !gameOver) velY -= 0.1;
+    alpha = round(alpha*100)/100;
+    
+    if(currentSpriteSheetFrame >= numFrames) currentSpriteSheetFrame = 0;
+    if(action == "normal_ascend"){
+        img.cropFrom(fullImg, floor(currentSpriteSheetFrame)*imageWidth, 0, imageWidth, fullImg.height);
+    }else if(action == "boost"){
+        img.cropFrom(fullImg, floor(15+currentSpriteSheetFrame)*imageWidth, 0, imageWidth, fullImg.height);
+    }else if(action == "left"){
+        img.cropFrom(fullImg, floor(10+currentSpriteSheetFrame)*imageWidth, 0, imageWidth, fullImg.height);
+    }else if(action == "right"){
+        img.cropFrom(fullImg, floor(5+currentSpriteSheetFrame)*imageWidth, 0, imageWidth, fullImg.height);
+    }
 }
 
 void Player::draw()
 {
-    //check if player is going down or player is above center
-    /*if(y > ofGetHeight() - img.getHeight() - 10){
-        y = ofGetHeight() - img.getHeight() - 10;
-        velY = 0;
-    }*/
+    ofSetColor(255, 255, 255, 255*alpha);
     
     x += velX;
     y -= velY;
     img.draw(x,y);
+    
+    /*ofPushMatrix();
+        ofTranslate(img.width/2, img.height/2, 0);//move pivot to centre
+        ofRotate(ofGetFrameNum() * .1, 0, 0, 1);//rotate from centre
+        ofPushMatrix();
+            img.draw(x + -img.width/2, y + -img.height/2);//move back by the centre offset
+        ofPopMatrix();
+    ofPopMatrix();*/
+    
+    ofSetColor(255, 255, 255, 255);
 }
 
 void Player::setDefault(){
@@ -58,11 +80,15 @@ void Player::setDefault(){
     friction = .9;
     speed = 2;
     maxYSpeed = 0.6;
-    x = ofGetWidth()/2 - img.getWidth()/ 2;
-    y = ofGetHeight() - img.getHeight();
-    defaultY = ((ofGetHeight() - img.getHeight()) / 2) + 70;
+    x = ofGetWidth()/2 - imageWidth/ 2;
+    y = ofGetHeight() - fullImg.getHeight();
+    defaultY = ((ofGetHeight() - fullImg.getHeight()) / 2) + 70;
     gameHasStarted = false;
     gameOver = false;
+    minY = ((ofGetHeight() - fullImg.getHeight()) / 2) - 50;
+    alpha = 1;
+    currentSpriteSheetFrame = 0;
+    action = "normal_ascend";
     
     // move sound
     // soundPlayer.loadSound("sounds/move.mp3");
