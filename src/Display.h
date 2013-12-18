@@ -37,7 +37,8 @@ class Display
         float speed;
         int defaultSpeed;
         int time;
-        int temperature;
+        float temperature;
+        int minTemperature;
         int coins;
         int maxSpeed;
     

@@ -8,15 +8,14 @@
 
 #include "Coin.h"
 
-Coin::Coin(float xPos, float yPos, int startFrame)
+Coin::Coin(float xPos, float yPos, int frame)
 {
     name = "coin";
-    
-    ofEnableAlphaBlending();
-    img.setFrame(startFrame);
-    img.setPixelFormat(OF_PIXELS_RGBA);
-    img.loadMovie("coin/coin.gif");
-    img.play();
+    currentFrame = frame;
+    width = 65;
+
+    imgOriginalCoin.loadImage("coin/coin_spritesheet.png");
+    imgCurrentCoint.cropFrom(imgOriginalCoin, currentFrame*65, 0, 65, 65);
     
     x = xPos;
     originalX = x;
@@ -33,7 +32,13 @@ Coin::Coin(float xPos, float yPos, int startFrame)
 
 void Coin::update()
 {
-    img.update();
+    if(currentFrame < 8){
+        currentFrame+=0.3;
+    }else{
+        currentFrame = 0;
+    }
+    imgCurrentCoint.cropFrom(imgOriginalCoin, floor(currentFrame)*65, 0, 65, 65);
+    imgCurrentCoint.update();
     
     velX-=diffX;
     x+=velX;
@@ -84,5 +89,5 @@ void Coin::update()
 
 void Coin::draw()
 {
-    img.draw(x, y);
+    imgCurrentCoint.draw(x, y);
 }

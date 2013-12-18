@@ -14,8 +14,13 @@
 class Coin
 {
     public:
-        Coin(float xPos, float yPos, int startFrame);
-        ofVideoPlayer img;
+        Coin(float xPos, float yPos, int frame);
+        int width;
+    
+        ofImage imgOriginalCoin;
+        ofImage imgCurrentCoint;
+        float currentFrame;
+    
         void update();
         void draw();
         float x;
@@ -24,7 +29,7 @@ class Coin
         float sinIncrement;
         float velY;
         float velX;
-        float shiftingX; //totale verplaatsing (other than sinus animation)
+        float shiftingX; //total movement (other than sinus animation)
         string name;
     
     private:

@@ -4,8 +4,8 @@
 //--------------------------------------------------------------
 void testApp::setup()
 {
-    /*ofAddListener(arduino.EInitialized, this, &testApp::setupArduino);
-    arduino.connect("/dev/tty.usbmodem1411", 57600);*/
+    ofAddListener(arduino.EInitialized, this, &testApp::setupArduino);
+    arduino.connect("/dev/tty.usbmodem1411", 57600);
     
     timeStarted = ofGetElapsedTimeMillis();
     //delay until animation of player + display
@@ -24,6 +24,7 @@ void testApp::setup()
     gameOverTime = 0;
     
     causeOfGameOver = "";
+    coinsGroupsMade = 0;
 }
 
 void testApp::setupArduino(const int &version){
@@ -42,7 +43,8 @@ void testApp::setupArduino(const int &version){
 //--------------------------------------------------------------
 void testApp::update()
 {
-    //arduino.update();
+    arduino.update();
+    //arduino.sendDigital(10, ARD_HIGH);
     
     if(gameOverTime == 0 && !(display->fuel<=0) && !(display->health<=0)){
         if(!player->gameHasStarted){
@@ -103,28 +105,37 @@ void testApp::update()
                     display->coins++;
                 }
             }
+            
+            if(arduino.getDigital(3) == 1){
+                cout << "powerup activated" << endl;
+                /*if(arduino.getDigital(10) == 1){
+                    arduino.sendDigital(10, ARD_LOW);
+                }else{
+                    arduino.sendDigital(10, ARD_HIGH);
+                }*/
+            }
     
-            if(/*arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1*/ keys[356] == true && keys[358] == true){
+            if(arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1 /*keys[356] == true && keys[358] == true*/){
+                display->fuel-= background->speedY/20;
+                //display->fuel-=0.00001;
                 background->speedY += 0.3;
                 background->speedX = 0;
                 objects->velX = 0;
-                objects->velY = 4.5;
-                //display->fuel-=0.08;
-                display->fuel-=0.7;
+                objects->velY = 6.5;
                 display->speed = round((background->speedY*10)*2);
         
-                if(player->y > ((ofGetHeight() - player->img.getHeight()) / 2) - 50){
-                    player->velY += 0.07;
-                }
+                if(player->y > ((ofGetHeight() - player->img.getHeight()) / 2) - 50)player->velY += 0.07;
         
-                /*arduino.sendDigital(11, ARD_HIGH);
+                arduino.sendDigital(11, ARD_HIGH);
                 arduino.sendDigital(12, ARD_HIGH);
-                arduino.sendDigital(13, ARD_HIGH);*/
+                arduino.sendDigital(13, ARD_HIGH);
             }else{
+                //display->fuel-= background->speedY/50;
+                //display->fuel-= 1;
+                display->fuel-=0.000001;
                 background->speedY -= 0.05;
                 objects->velX = 0;
-                objects->velY = 1.5;
-                display->fuel-=0.02;
+                objects->velY = 3.5;
                 if(round(background->speedY*50) < (background->maxSpeedY*10)*2){
                     display->speed = round(background->speedY*50);
                 }else{
@@ -138,38 +149,42 @@ void testApp::update()
                 }
         
                 //LEFT
-                if(/*arduino.getDigital(4) == 1*/ keys[356] == true){
+                if(arduino.getDigital(4) == 1 /*keys[356] == true*/){
                     background->speedX = 3;
                     objects->velX = 2.2;
             
-                    /*arduino.sendDigital(11, ARD_LOW);
+                    arduino.sendDigital(11, ARD_LOW);
                     arduino.sendDigital(12, ARD_HIGH);
-                    arduino.sendDigital(13, ARD_LOW);*/
+                    arduino.sendDigital(13, ARD_LOW);
                 }
         
                 //RIGHT
-                if(/*arduino.getDigital(5) == 1*/ keys[358] == true){
+                if(arduino.getDigital(5) == 1 /*keys[358] == true*/){
                     background->speedX = -3;
                     objects->velX = -2.2;
             
-                    /*arduino.sendDigital(11, ARD_LOW);
+                    arduino.sendDigital(11, ARD_LOW);
                     arduino.sendDigital(12, ARD_LOW);
-                    arduino.sendDigital(13, ARD_HIGH);*/
+                    arduino.sendDigital(13, ARD_HIGH);
                 }
         
-                if(/*arduino.getDigital(4) != 1 && arduino.getDigital(5) != 1*/ keys[356] == false && keys[358] == false){
+                //NOTHING
+                if(arduino.getDigital(4) != 1 && arduino.getDigital(5) != 1 /*keys[356] == false && keys[358] == false*/){
                     background->speedX = 0;
             
-                    /*arduino.sendDigital(11, ARD_LOW);
+                    arduino.sendDigital(11, ARD_LOW);
                     arduino.sendDigital(12, ARD_LOW);
-                    arduino.sendDigital(13, ARD_LOW);*/
+                    arduino.sendDigital(13, ARD_LOW);
                 }
             }
     
-            display->altitude += round(background->speedY/60);
-            cout << background->speedY << endl;
             objects->update();
-            display->update();
+        }
+        
+        int backgroundOriginalY = -background->img.getHeight()*2 + ofGetHeight();
+        if(background->y > backgroundOriginalY + 900 + 900*coinsGroupsMade){
+            objects->makeCoinGroup((rand() % ofGetWidth()) - ofGetWidth()/2);
+            coinsGroupsMade++;
         }
         
         if(!player->gameHasStarted){
@@ -180,10 +195,15 @@ void testApp::update()
         }else{
             background->update();
         }
+        
+        display->altitude += background->speedY;
+        display->altitude = round(display->altitude);
+        display->temperature -= (background->speedY*0.08);
+        display->update();
     }else{
-        /*arduino.sendDigital(11, ARD_LOW);
+        arduino.sendDigital(11, ARD_LOW);
         arduino.sendDigital(12, ARD_LOW);
-        arduino.sendDigital(13, ARD_LOW);*/
+        arduino.sendDigital(13, ARD_LOW);
         
         if(display->fuel <= 0 && causeOfGameOver == ""){
             causeOfGameOver = "fuel";
@@ -204,9 +224,10 @@ void testApp::update()
         }
         
         if(gameOverTime == 0){
+            cout << "game over" << endl;
             gameOverTime = ofGetElapsedTimeMillis()-timeStarted;
             player->gameOver = true;
-            menu = new Menu(true, causeOfGameOver, display->altitude, display->maxSpeed, display->time, display->coins);
+            menu = new Menu(true, causeOfGameOver, display->altitude, display->maxSpeed, display->time, display->coins, objects->numTotalCoins);
         }
         
         if(menu->alpha < 1.9){
@@ -214,9 +235,10 @@ void testApp::update()
         }
         
         int currentTime = ofGetElapsedTimeMillis()-timeStarted;
-        if(/*(arduino.getDigital(3) == 1 || arduino.getDigital(4) == 1 || arduino.getDigital(5) == 1)*/ (keys[356] == true || keys[358] == true) && currentTime > (gameOverTime+3000)){
+        if((arduino.getDigital(3) == 1 || arduino.getDigital(4) == 1 || arduino.getDigital(5) == 1) /*(keys[356] == true || keys[358] == true)*/ && currentTime > (gameOverTime+3000)){
             gameOverTime = 0;
             causeOfGameOver = "";
+            coinsGroupsMade = 0;
             
             timeStarted = currentTime + timeStarted;
             background->setDefault();

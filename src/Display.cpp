@@ -47,7 +47,8 @@ void Display::setDefault(){
     speed = 0;
     maxSpeed = speed;
     time = 0;
-    temperature = 20;
+    temperature = 40;
+    minTemperature = -100;
     coins = 0;
     
     topY = -topBg.height;
@@ -73,9 +74,9 @@ void Display::update()
     
     topBg.update();
     
-    if(maxSpeed < speed){
-        maxSpeed = speed;
-    }
+    if(maxSpeed < speed)maxSpeed = speed;
+    if(temperature < minTemperature) temperature = minTemperature;
+    temperature = round(temperature*10)/10;
 }
 
 void Display::draw()
@@ -91,7 +92,7 @@ void Display::draw()
     iconAltitude.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.05, topY+5);
     iconSpeed.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.22 , topY+5);
     iconTime.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.44 , topY+5);
-    iconTemperature.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.635 , topY+5);
+    iconTemperature.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.625 , topY+5);
     iconCoins.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.755 , topY+5);
     
     iconPowerUp1.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.12, bottomY + 46);
@@ -123,9 +124,9 @@ void Display::draw()
     convert.clear();
     
     string temperatureStr;
-    convert << temperature << " C";
+    convert << temperature << "C";
     temperatureStr = convert.str();
-    font->drawString(temperatureStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.635 + 35, topY + 30);
+    font->drawString(temperatureStr, ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.625 + 35, topY + 30);
     convert.str("");
     convert.clear();
     
