@@ -10,7 +10,7 @@
 
 Background::Background()
 {    
-    img.loadImage("background/space3.jpg");
+    img.loadImage("background/space.jpg");
     img2.loadImage("background/space2.jpg");
     
     maxSpeedY = 5;

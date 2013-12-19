@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		340732F518623A8100FEB529 /* Powerup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 340732F318623A8100FEB529 /* Powerup.cpp */; };
+		340732F818627EDF00FEB529 /* Boost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 340732F618627EDF00FEB529 /* Boost.cpp */; };
 		34790798185D96F4005E7E60 /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34790796185D96F4005E7E60 /* Menu.cpp */; };
 		3479079B185DB3D9005E7E60 /* Countdown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34790799185DB3D9005E7E60 /* Countdown.cpp */; };
 		34ACC601185BB180006AFE30 /* Display.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 34ACC5FF185BB180006AFE30 /* Display.cpp */; };
@@ -71,6 +72,8 @@
 /* Begin PBXFileReference section */
 		340732F318623A8100FEB529 /* Powerup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Powerup.cpp; sourceTree = "<group>"; };
 		340732F418623A8100FEB529 /* Powerup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Powerup.h; sourceTree = "<group>"; };
+		340732F618627EDF00FEB529 /* Boost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Boost.cpp; sourceTree = "<group>"; };
+		340732F718627EDF00FEB529 /* Boost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Boost.h; sourceTree = "<group>"; };
 		34790796185D96F4005E7E60 /* Menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
 		34790797185D96F4005E7E60 /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
 		34790799185DB3D9005E7E60 /* Countdown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Countdown.cpp; sourceTree = "<group>"; };
@@ -174,6 +177,8 @@
 				3479079A185DB3D9005E7E60 /* Countdown.h */,
 				340732F318623A8100FEB529 /* Powerup.cpp */,
 				340732F418623A8100FEB529 /* Powerup.h */,
+				340732F618627EDF00FEB529 /* Boost.cpp */,
+				340732F718627EDF00FEB529 /* Boost.h */,
 			);
 			name = World;
 			sourceTree = "<group>";
@@ -373,6 +378,7 @@
 				831C57F0183F5B1A0055FB72 /* Functions.cpp in Sources */,
 				83C92337184C840C00BF052F /* Background.cpp in Sources */,
 				340732F518623A8100FEB529 /* Powerup.cpp in Sources */,
+				340732F818627EDF00FEB529 /* Boost.cpp in Sources */,
 				83EE1773185210190078CF0E /* Objects.cpp in Sources */,
 				3479079B185DB3D9005E7E60 /* Countdown.cpp in Sources */,
 			);

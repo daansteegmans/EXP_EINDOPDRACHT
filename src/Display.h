@@ -18,6 +18,7 @@ class Display
         void update();
         void draw();
         void setDefault();
+        void startAlarm();
 
         ofImage topBg;
         ofImage bottomBg;
@@ -50,12 +51,25 @@ class Display
         ofImage iconTemperature;
         ofImage iconCoins;
     
+        ofImage iconPowerUpShield;
+        ofImage iconPowerUpBattery;
+        ofImage iconPowerUpDouble;
+    
         ofImage iconEmpty1;
-        ofImage iconPowerUp1;
         ofImage iconEmpty2;
-        ofImage iconPowerUp2;
         ofImage iconEmpty3;
-        ofImage iconPowerUp3;
+    
+        ofImage iconPowerUp1Shown;
+        ofImage iconPowerUp2Shown;
+        ofImage iconPowerUp3Shown;
+    
+        int iconPowerUp1OffsetY;
+        int iconPowerUp2OffsetY;
+        int iconPowerUp3OffsetY;
+    
+        string powerUp1Text;
+        string powerUp2Text;
+        string powerUp3Text;
     
         vector<string> powerupNames;
         int maxPowerups;
@@ -82,12 +96,15 @@ class Display
         int topDefaultY;
         int bottomDefaultY;
         float alpha;
+        ofSoundPlayer alarmSound;
     
     private:
         ofTrueTypeFont *font;
         ofTrueTypeFont *font2;
         int fillTotalWidth;
         int fillTotalHeight;
+    
+        bool isAlarmPlaying;
     
 };
 

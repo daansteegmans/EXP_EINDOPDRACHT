@@ -48,4 +48,17 @@ class testApp : public ofBaseApp{
         ofSoundPlayer backgroundMusic;
         bool bgMusicIsPlaying;
         ofSoundPlayer coinSound;
+        ofSoundPlayer gameOverSound;
+        ofSoundPlayer getPowerUpSound;
+        ofSoundPlayer activateShieldSound;
+        ofSoundPlayer activateBatterySound;
+        ofSoundPlayer activateDoubleSound;
+    
+        int lastPowerUpActivated;
+        int powerUpsMade;
+        bool shieldActivated;
+        bool batteryActivated;
+        bool doubleActivated;
+    
+        int boostsMade;
 };

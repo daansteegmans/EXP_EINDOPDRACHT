@@ -37,10 +37,16 @@ Display::Display()
     iconEmpty2.loadImage("display/icons/powerup_2.png");
     iconEmpty3.loadImage("display/icons/powerup_3.png");
     
+    iconPowerUpShield.loadImage("powerups/shield_small.png");
+    iconPowerUpBattery.loadImage("powerups/battery_small.png");
+    iconPowerUpDouble.loadImage("powerups/double_small.png");
+    
     font = new ofTrueTypeFont();
     font->loadFont("fonts/Piston_Pressure.otf", 24);
     font2 = new ofTrueTypeFont();
     font2->loadFont("fonts/Piston_Pressure.otf", 28);
+    
+    alarmSound.loadSound("sounds/alarm.mp3");
     
     Display::setDefault();
 }
@@ -82,11 +88,22 @@ void Display::setDefault(){
     healthBorderShown = healthBorderNormal;
     healthImageShown = healthImageNormal;
     
-    iconPowerUp1 = iconEmpty1;
-    iconPowerUp2 = iconEmpty2;
-    iconPowerUp3 = iconEmpty3;
+    iconPowerUp1Shown = iconEmpty1;
+    iconPowerUp2Shown = iconEmpty2;
+    iconPowerUp3Shown = iconEmpty3;
+    
+    iconPowerUp1OffsetY = 0;
+    iconPowerUp2OffsetY = 0;
+    iconPowerUp3OffsetY = 0;
     
     maxPowerups = 3;
+    
+    isAlarmPlaying = false;
+    powerupNames.clear();
+    
+    powerUp1Text = "leeg";
+    powerUp2Text = "leeg";
+    powerUp3Text = "leeg";
     
     Display::update();
     Display::draw();
@@ -106,6 +123,7 @@ void Display::update()
     topBg.update();
     
     if(fuel < 25){
+        Display::startAlarm();
         if(fuelStartedBlinkingTime == 0){
             fuelStartedBlinkingTime = ofGetElapsedTimeMillis();
         }
@@ -127,6 +145,7 @@ void Display::update()
     }
     
     if(health < 25){
+        Display::startAlarm();
         if(healthStartedBlinkingTime == 0){
             healthStartedBlinkingTime = ofGetElapsedTimeMillis();
         }
@@ -147,9 +166,21 @@ void Display::update()
         numHealthBlinks = 0;
     }
     
+    if(fuel > 25 && health > 25){
+        isAlarmPlaying = false;
+        alarmSound.stop();
+    }
     if(maxSpeed < speed)maxSpeed = speed;
     if(temperature < minTemperature) temperature = minTemperature;
     temperature = round(temperature*10)/10;
+}
+
+void Display::startAlarm(){
+    if(!isAlarmPlaying){
+        alarmSound.play();
+        alarmSound.setLoop(true);
+        isAlarmPlaying = true;
+    }
 }
 
 void Display::draw()
@@ -173,9 +204,9 @@ void Display::draw()
     iconTemperature.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.625 , topY+5);
     iconCoins.draw(ofGetWidth()/2 - topBg.getWidth()/2 + topBg.getWidth()*0.755 , topY+5);
     
-    iconPowerUp1.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.12, bottomY + 46);
-    iconPowerUp2.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.4, bottomY + 46);
-    iconPowerUp3.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.7, bottomY + 46);
+    iconPowerUp1Shown.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.12, bottomY + 46 - iconPowerUp1OffsetY);
+    iconPowerUp2Shown.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.4, bottomY + 46 - iconPowerUp2OffsetY);
+    iconPowerUp3Shown.draw(ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.7, bottomY + 46 - iconPowerUp3OffsetY);
     
     ofSetColor(255,255,255,255*(0.6*alpha));
     ostringstream convert;
@@ -216,23 +247,23 @@ void Display::draw()
     convert.clear();
     
     string powerup1Str;
-    convert << "leeg";
+    convert << powerUp1Text;
     powerup1Str = convert.str();
-    font2->drawString(powerup1Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.12 + iconPowerUp1.width + 20, bottomY + 80);
+    font2->drawString(powerup1Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.12 + iconPowerUp1Shown.width + 20, bottomY + 80);
     convert.str("");
     convert.clear();
     
     string powerup2Str;
-    convert << "leeg";
+    convert << powerUp2Text;
     powerup2Str = convert.str();
-    font2->drawString(powerup2Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.4 + iconPowerUp2.width + 20, bottomY + 80);
+    font2->drawString(powerup2Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.4 + iconPowerUp2Shown.width + 20, bottomY + 80);
     convert.str("");
     convert.clear();
     
     string powerup3Str;
-    convert << "leeg";
+    convert << powerUp3Text;
     powerup3Str = convert.str();
-    font2->drawString(powerup3Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.7 + iconPowerUp3.width + 20, bottomY + 80);
+    font2->drawString(powerup3Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.7 + iconPowerUp3Shown.width + 20, bottomY + 80);
     convert.str("");
     convert.clear();
     

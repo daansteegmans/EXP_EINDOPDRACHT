@@ -12,6 +12,7 @@
 #include "ofMain.h"
 #include "Coin.h"
 #include "Powerup.h"
+#include "Boost.h"
 
 class Objects
 {
@@ -22,6 +23,7 @@ class Objects
         void setDefault();
         void makeCoinGroup(int offsetX);
         void makePowerup(int offsetX);
+        void makeBoost(int offsetX);
         float velX;
         float velY;
     
@@ -29,11 +31,12 @@ class Objects
         int numTotalCoins;
     
         vector<Powerup *> powerups;
+        vector<Boost *> boosts;
     
     private:
         Coin* coin;
         Powerup* powerup;
-    
+        Boost* boost;
 };
 
 #endif /* defined(__ED_eindopdracht__Objects__) */

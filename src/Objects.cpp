@@ -18,6 +18,8 @@ void Objects::setDefault(){
     velY = 1.5;
     numTotalCoins = 0;
     coins.clear();
+    powerups.clear();
+    boosts.clear();
 }
 
 void Objects::makeCoinGroup(int offsetX){
@@ -49,9 +51,7 @@ void Objects::makeCoinGroup(int offsetX){
 }
 
 void Objects::makePowerup(int offsetX){
-    string name;
     int random = rand() % 3;
-    cout << "make powerup, random: " << random << endl;
     if(random == 0){
         powerup = new Powerup("battery", offsetX);
     }else if(random == 1){
@@ -60,7 +60,18 @@ void Objects::makePowerup(int offsetX){
         powerup = new Powerup("shield", offsetX);
     }
     powerups.push_back(powerup);
-    
+}
+
+void Objects::makeBoost(int offsetX){
+    int random = rand() % 2;
+    if(random == 0){
+        boost = new Boost("speed", offsetX);
+    }else if(random == 1){
+        boost = new Boost("fuel", offsetX);
+    }/*else if(random == 2){
+        boost = new Boost("heart", offsetX);
+    }*/
+    boosts.push_back(boost);
 }
 
 void Objects::update()
@@ -71,10 +82,16 @@ void Objects::update()
         coins[i]->update();
     }
     
-    for(int i=0; i<powerups.size(); i++){
-        powerups[i]->velX = velX;
-        powerups[i]->velY = velY;
-        powerups[i]->update();
+    for(int j=0; j<powerups.size(); j++){
+        powerups[j]->velX = velX;
+        powerups[j]->velY = velY;
+        powerups[j]->update();
+    }
+    
+    for(int k=0; k<boosts.size(); k++){
+        boosts[k]->velX = velX;
+        boosts[k]->velY = velY;
+        boosts[k]->update();
     }
 }
 
@@ -84,7 +101,11 @@ void Objects::draw()
         coins[i]->draw();
     }
     
-    for(int i=0; i<powerups.size(); i++){
-        powerups[i]->draw();
+    for(int j=0; j<powerups.size(); j++){
+        powerups[j]->draw();
+    }
+    
+    for(int k=0; k<boosts.size(); k++){
+        boosts[k]->draw();
     }
 }

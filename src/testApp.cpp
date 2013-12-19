@@ -4,8 +4,8 @@
 //--------------------------------------------------------------
 void testApp::setup()
 {
-    /*ofAddListener(arduino.EInitialized, this, &testApp::setupArduino);
-    arduino.connect("/dev/tty.usbmodem1411", 57600);*/
+    ofAddListener(arduino.EInitialized, this, &testApp::setupArduino);
+    arduino.connect("/dev/tty.usbmodem1411", 57600);
     
     timeStarted = ofGetElapsedTimeMillis();
     //delay until animation of player + display
@@ -29,9 +29,22 @@ void testApp::setup()
     startBlinking = false;
     timeArduinoInitialized = 0;
     
+    lastPowerUpActivated = 0;
+    powerUpsMade = 0;
+    shieldActivated = false;
+    batteryActivated = false;
+    doubleActivated = false;
+    
+    boostsMade = 0;
+    
     backgroundMusic.loadSound("music/awesomearcademusic.mp3");
     bgMusicIsPlaying = false;
     coinSound.loadSound("sounds/coin.mp3");
+    gameOverSound.loadSound("sounds/gameover.mp3");
+    getPowerUpSound.loadSound("sounds/getpowerup.mp3");
+    activateShieldSound.loadSound("sounds/activateshield.mp3");
+    activateBatterySound.loadSound("sounds/activatebattery.mp3");
+    activateDoubleSound.loadSound("sounds/activatedouble.mp3");
 }
 
 void testApp::startUpBlink(){
@@ -68,14 +81,14 @@ void testApp::setupArduino(const int &version){
 //--------------------------------------------------------------
 void testApp::update()
 {
-    //arduino.update();
+    arduino.update();
     player->currentSpriteSheetFrame+=0.3;
     
     //startup blinking
-    /*if(startBlinking && numBlinks < 6 && ofGetElapsedTimeMillis() - timeArduinoInitialized >  150*(numBlinks*2)){
+    if(startBlinking && numBlinks < 6 && ofGetElapsedTimeMillis() - timeArduinoInitialized >  150*(numBlinks*2)){
         testApp::startUpBlink();
         numBlinks++;
-    }*/
+    }
     if(numBlinks>=6)startBlinking = false;
     
     //play background music
@@ -143,36 +156,134 @@ void testApp::update()
                         }
                     }
                     objects->coins = coins;
-                    display->coins++;
+                    if(doubleActivated){
+                        display->coins+=2;
+                    }else{
+                        display->coins++;
+                    }
                 }
             }
             
             for(int i=0; i<objects->powerups.size(); i++){
                 if(functions->checkCollisionPowerup(player, objects->powerups[i]) != "no collision" && display->powerupNames.size() < display->maxPowerups){
                     vector<Powerup *> powerups;
-                    //coinSound.play();
+                    getPowerUpSound.play();
                     for(int j=0; j<objects->powerups.size(); j++){
                         if(objects->powerups[j] != objects->powerups[i]){
                             powerups.push_back(objects->powerups[j]);
                         }
+                    }
+                    switch(display->powerupNames.size()){
+                        case 0:
+                            if(objects->powerups[i]->name == "shield"){
+                                display->iconPowerUp1Shown = display->iconPowerUpShield;
+                                display->powerUp1Text = "shield";
+                            }else if(objects->powerups[i]->name == "battery"){
+                                display->iconPowerUp1Shown = display->iconPowerUpBattery;
+                                display->powerUp1Text = "battery";
+                            }else if(objects->powerups[i]->name == "double"){
+                                display->iconPowerUp1Shown = display->iconPowerUpDouble;
+                                display->powerUp1Text = "double";
+                            }
+                            display->iconPowerUp1OffsetY = 18;
+                            break;
+                        case 1:
+                            if(objects->powerups[i]->name == "shield"){
+                                display->iconPowerUp2Shown = display->iconPowerUpShield;
+                                display->powerUp2Text = "shield";
+                            }else if(objects->powerups[i]->name == "battery"){
+                                display->iconPowerUp2Shown = display->iconPowerUpBattery;
+                                display->powerUp2Text = "battery";
+                            }else if(objects->powerups[i]->name == "double"){
+                                display->iconPowerUp2Shown = display->iconPowerUpDouble;
+                                display->powerUp2Text = "double";
+                            }
+                            display->iconPowerUp2OffsetY = 18;
+                            break;
+                        case 2:
+                            if(objects->powerups[i]->name == "shield"){
+                                display->iconPowerUp3Shown = display->iconPowerUpShield;
+                                display->powerUp3Text = "shield";
+                            }else if(objects->powerups[i]->name == "battery"){
+                                display->iconPowerUp3Shown = display->iconPowerUpBattery;
+                                display->powerUp3Text = "battery";
+                            }else if(objects->powerups[i]->name == "double"){
+                                display->iconPowerUp3Shown = display->iconPowerUpDouble;
+                                display->powerUp3Text = "double";
+                            }
+                            display->iconPowerUp3OffsetY = 18;
+                            break;
                     }
                     display->powerupNames.push_back(objects->powerups[i]->name);
                     objects->powerups = powerups;
                 }
             }
             
-            if(arduino.getDigital(3) == 1){
-                cout << "powerup activated" << endl;
-                if(arduino.getDigital(10) == 1){
-                    //arduino.sendDigital(10, ARD_LOW);
-                }else{
-                    //arduino.sendDigital(10, ARD_HIGH);
+            arduino.sendDigital(10, ARD_LOW);
+            if(lastPowerUpActivated!=0 && ofGetElapsedTimeMillis() > lastPowerUpActivated + 5000){
+                shieldActivated = false;
+                batteryActivated = false;
+                doubleActivated = false;
+                arduino.sendDigital(10, ARD_HIGH);
+            }
+            
+            //POWERUPS
+            if(arduino.getDigital(3) == 1 /*keys[32] == true && ofGetElapsedTimeMillis()*/ > lastPowerUpActivated + 5000 && lastPowerUpActivated!=0){
+                cout << "powerup activated: " << display->powerupNames[0] << endl;
+                lastPowerUpActivated = ofGetElapsedTimeMillis();
+                
+                if(display->powerupNames[0] == "shield"){
+                    activateShieldSound.play();
+                    shieldActivated = true;
+                }else if(display->powerupNames[0] == "battery"){
+                    activateBatterySound.play();
+                    batteryActivated = true;
+                }else if(display->powerupNames[0] == "double"){
+                    activateDoubleSound.play();
+                    doubleActivated = true;
                 }
+                
+                switch(display->powerupNames.size()){
+                    case 1:
+                        display->iconPowerUp1Shown = display->iconEmpty1;
+                        display->iconPowerUp1OffsetY = 0;
+                        display->powerUp1Text = "leeg";
+                        break;
+                    case 2:
+                        display->iconPowerUp1Shown = display->iconPowerUp2Shown;
+                        display->iconPowerUp2Shown = display->iconEmpty2;
+                        display->iconPowerUp2OffsetY = 0;
+                        display->powerUp1Text = display->powerUp2Text;
+                        display->powerUp2Text = "leeg";
+                        break;
+                    case 3:
+                        display->iconPowerUp1Shown = display->iconPowerUp2Shown;
+                        display->iconPowerUp2Shown = display->iconPowerUp3Shown;
+                        display->iconPowerUp3Shown = display->iconEmpty3;
+                        display->iconPowerUp3OffsetY = 0;
+                        display->powerUp1Text = display->powerUp2Text;
+                        display->powerUp2Text = display->powerUp3Text;
+                        display->powerUp3Text = "leeg";
+                        break;
+                }
+                
+                vector<string> powerupNames;
+                for(int i=0; i<display->powerupNames.size(); i++){
+                    if(i!=0){
+                        powerupNames.push_back(display->powerupNames[i]);
+                    }
+                }
+                display->powerupNames = powerupNames;
+            }
+            
+            if(batteryActivated){
+                display->fuel-= (background->speedY/50)*0.3;
+            }else{
+                display->fuel-= background->speedY/50;
             }
     
-            if(/*arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1*/ keys[356] == true && keys[358] == true){
-                display->fuel-= background->speedY/20;
-                //display->fuel-=0.00001;
+            //BOOST
+            if(arduino.getDigital(4) == 1 && arduino.getDigital(5) == 1 /*keys[356] == true && keys[358] == true*/){
                 player->action = "boost";
                 background->speedY += 0.3;
                 background->speedX = 0;
@@ -182,9 +293,9 @@ void testApp::update()
         
                 if(player->y > player->minY)player->velY += 0.07;
         
-                /*arduino.sendDigital(11, ARD_HIGH);
+                arduino.sendDigital(11, ARD_HIGH);
                 arduino.sendDigital(12, ARD_HIGH);
-                arduino.sendDigital(13, ARD_HIGH);*/
+                arduino.sendDigital(13, ARD_HIGH);
             }else{
                 objects->velX = 0;
                 objects->velY = 3.5;
@@ -205,18 +316,17 @@ void testApp::update()
                 }
                 
                 if(!startBlinking){
-                    /*arduino.sendDigital(11, ARD_LOW);
+                    arduino.sendDigital(11, ARD_LOW);
                     arduino.sendDigital(12, ARD_LOW);
-                    arduino.sendDigital(13, ARD_LOW);*/
+                    arduino.sendDigital(13, ARD_LOW);
                 }
         
                 //LEFT
-                if(/*arduino.getDigital(4) == 1*/ keys[356] == true){
+                if(arduino.getDigital(4) == 1 /*keys[356] == true*/){
                     player->velY += 0.15;
-                    //display->fuel-= background->speedY/35;
-                    /*arduino.sendDigital(11, ARD_LOW);
+                    arduino.sendDigital(11, ARD_LOW);
                     arduino.sendDigital(12, ARD_HIGH);
-                    arduino.sendDigital(13, ARD_LOW);*/
+                    arduino.sendDigital(13, ARD_LOW);
 
                     if(background->speedY < background->manoeuvreSpeedY){
                         background->speedY += 0.2;
@@ -225,7 +335,7 @@ void testApp::update()
                     }
                     if(background->x < -30){
                         background->speedX = 3;
-                        objects->velX = 3.2;
+                        objects->velX = 5.2;
                         player->action = "left";
                     }else if(background->x > -0.1){
                         background->x = 0;
@@ -236,12 +346,11 @@ void testApp::update()
                 }
         
                 //RIGHT
-                if(/*arduino.getDigital(5) == 1*/ keys[358] == true){
+                if(arduino.getDigital(5) == 1 /*keys[358] == true*/){
                     player->velY += 0.15;
-                    //display->fuel-= background->speedY/35;
-                    /*arduino.sendDigital(11, ARD_LOW);
+                    arduino.sendDigital(11, ARD_LOW);
                     arduino.sendDigital(12, ARD_LOW);
-                    arduino.sendDigital(13, ARD_HIGH);*/
+                    arduino.sendDigital(13, ARD_HIGH);
                     
                     if(background->speedY < background->manoeuvreSpeedY){
                         background->speedY += 0.2;
@@ -250,7 +359,7 @@ void testApp::update()
                     }
                     if(background->x > -background->img.width + ofGetWidth() +30){
                         background->speedX = -3;
-                        objects->velX = -3.2;
+                        objects->velX = -5.2;
                         player->action = "right";
                     }else if(background->x < -background->img.width + ofGetWidth() + 0.1){
                         background->x = -background->img.width + ofGetWidth();
@@ -261,32 +370,53 @@ void testApp::update()
                 }
         
                 //NOTHING
-                if(/*arduino.getDigital(4) != 1 && arduino.getDigital(5) != 1*/ keys[356] == false && keys[358] == false){
+                if(arduino.getDigital(4) != 1 && arduino.getDigital(5) != 1 /*keys[356] == false && keys[358] == false*/){
                     background->speedX = 0;
                     background->speedY -= 0.05;
-                    display->fuel-= background->speedY/50;
                     player->action = "normal_ascend";
-                    display->health-= background->speedY/30;
-                    //display->health-=0.5;
                 }
             }
     
             objects->update();
         }
         
+        //object generating
         int backgroundOriginalY = -background->img.getHeight()*2 + ofGetHeight();
+        if(background->y > backgroundOriginalY + 800 + 600*boostsMade){
+            if(background->x > -ofGetWidth()/2){
+                int maxRandom = ofGetWidth() - (ofGetWidth()/2 + round(background->x)) - 50;
+                objects->makeBoost((rand() % maxRandom) + ofGetWidth()/2 + background->x);
+            }else if(background->x < -background->img.width + ofGetWidth() + ofGetWidth()/2){
+                int maxRandom = ofGetWidth() - abs(-background->img.width + ofGetWidth() + ofGetWidth()/2) - 100;
+                objects->makeBoost((rand() % maxRandom) + 50);
+            }else{
+                objects->makeBoost((rand() % ofGetWidth() - 200) + 100);
+            }
+            boostsMade++;
+        }
+        
+        if(background->y > backgroundOriginalY + 1100*powerUpsMade){
+            if(background->x > -ofGetWidth()/2){
+                int maxRandom = ofGetWidth() - (ofGetWidth()/2 + round(background->x)) - 50;
+                objects->makePowerup((rand() % maxRandom) + ofGetWidth()/2 + background->x);
+            }else if(background->x < -background->img.width + ofGetWidth() + ofGetWidth()/2){
+                int maxRandom = ofGetWidth() - abs(-background->img.width + ofGetWidth() + ofGetWidth()/2) - 100;
+                objects->makePowerup((rand() % maxRandom) + 50);
+            }else{
+                objects->makePowerup((rand() % ofGetWidth() - 200) + 100);
+            }
+            powerUpsMade++;
+        }
+        
         if(background->y > backgroundOriginalY + 900*coinsGroupsMade){
             if(background->x > -ofGetWidth()/2){
                 int maxRandom = ofGetWidth() - (ofGetWidth()/2 + round(background->x)) - 50;
                 objects->makeCoinGroup((rand() % maxRandom) - ofGetWidth()/2 + ofGetWidth()/2 + background->x);
-                objects->makePowerup((rand() % maxRandom) + ofGetWidth()/2 + background->x);
             }else if(background->x < -background->img.width + ofGetWidth() + ofGetWidth()/2){
                 int maxRandom = ofGetWidth() - abs(-background->img.width + ofGetWidth() + ofGetWidth()/2) - 100;
                 objects->makeCoinGroup((rand() % maxRandom) - ofGetWidth()/2 + 50);
-                objects->makePowerup((rand() % maxRandom) + 50);
             }else{
                 objects->makeCoinGroup((rand() % ofGetWidth() - 200) - ofGetWidth()/2 + 100);
-                objects->makePowerup((rand() % ofGetWidth() - 200) + 100);
             }
             coinsGroupsMade++;
         }
@@ -326,14 +456,16 @@ void testApp::update()
         
         if(gameOverTime == 0){
             cout << "game over" << endl;
+            gameOverSound.play();
             gameOverTime = ofGetElapsedTimeMillis()-timeStarted;
             player->gameOver = true;
             menu = new Menu(true, causeOfGameOver, display->altitude, display->maxSpeed, display->time, display->coins, objects->numTotalCoins);
             numBlinks = 0;
+            display->alarmSound.stop();
             
-            /*arduino.sendDigital(11, ARD_LOW);
+            arduino.sendDigital(11, ARD_LOW);
             arduino.sendDigital(12, ARD_LOW);
-            arduino.sendDigital(13, ARD_LOW);*/
+            arduino.sendDigital(13, ARD_LOW);
         }
         
         if(numBlinks < 6 && ofGetElapsedTimeMillis() - gameOverTime - timeStarted >  500 + 150*(numBlinks*2) && gameOverTime != 0){
@@ -346,7 +478,7 @@ void testApp::update()
         }
         
         int currentTime = ofGetElapsedTimeMillis()-timeStarted;
-        if(/*(arduino.getDigital(3) == 1 || arduino.getDigital(4) == 1 || arduino.getDigital(5) == 1)*/ (keys[356] == true || keys[358] == true) && currentTime > (gameOverTime+3000)){
+        if((arduino.getDigital(3) == 1 || arduino.getDigital(4) == 1 || arduino.getDigital(5) == 1) /*(keys[356] == true || keys[358] == true)*/ && currentTime > (gameOverTime+3000)){
             gameOverTime = 0;
             causeOfGameOver = "";
             coinsGroupsMade = 0;
