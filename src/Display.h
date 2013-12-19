@@ -19,12 +19,15 @@ class Display
         void draw();
         void setDefault();
         void startAlarm();
+        void startFuelFilling(float newValue);
+        void startHealthFilling(float newValue);
 
         ofImage topBg;
         ofImage bottomBg;
     
         ofImage fuelBorderNormal;
         ofImage fuelBorderHightlight;
+        ofImage fuelBorderFilling;
         ofImage fuelBorderShown;
     
         ofImage fuelImageNormal;
@@ -36,6 +39,7 @@ class Display
     
         ofImage healthBorderNormal;
         ofImage healthBorderHightlight;
+        ofImage healthBorderFilling;
         ofImage healthBorderShown;
     
         ofImage healthImageNormal;
@@ -86,10 +90,15 @@ class Display
         ofImage fuelOriginalFill;
         ofImage fuelCurrentFill;
         float fuel;
+        int fuelFillingStartedTime;
+        float newFuelValue;
     
         ofImage healthOriginalFill;
         ofImage healthCurrentFill;
         float health;
+        int healthFillingStartedTime;
+        string healthFillingSign;
+        float newHealthValue;
     
         float topY;
         float bottomY;
@@ -98,6 +107,8 @@ class Display
         float alpha;
         ofSoundPlayer alarmSound;
     
+        int numPowerUpBlinks;
+        bool blinkOn;
     private:
         ofTrueTypeFont *font;
         ofTrueTypeFont *font2;

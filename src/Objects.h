@@ -13,6 +13,7 @@
 #include "Coin.h"
 #include "Powerup.h"
 #include "Boost.h"
+#include "Rock.h"
 
 class Objects
 {
@@ -24,6 +25,11 @@ class Objects
         void makeCoinGroup(int offsetX);
         void makePowerup(int offsetX);
         void makeBoost(int offsetX);
+        void makeRock(int offsetX);
+        void makeRockLine();
+        void makeSpeedBoostLine();
+        int getRockWidth(int randomNum);
+        string getRockName(int randomNum);
         float velX;
         float velY;
     
@@ -32,11 +38,13 @@ class Objects
     
         vector<Powerup *> powerups;
         vector<Boost *> boosts;
-    
+        vector<Rock *> rocks;
+        vector<Rock *> collisionRocks;
     private:
         Coin* coin;
         Powerup* powerup;
         Boost* boost;
+        Rock* rock;
 };
 
 #endif /* defined(__ED_eindopdracht__Objects__) */

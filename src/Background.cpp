@@ -16,8 +16,10 @@ Background::Background()
     maxSpeedY = 5;
     manoeuvreSpeedY = 3;
     minSpeedY = 1;
+    boostSpeedY = 0;
     
     Background::setDefault();
+    y = -img.getHeight()*2 + 3*ofGetHeight();
 }
 
 void Background::setDefault(){
@@ -31,10 +33,18 @@ void Background::setDefault(){
 
 void Background::update()
 {
-    if(speedY > maxSpeedY){
-        speedY = maxSpeedY;
-    } else if(speedY < minSpeedY){
-        speedY = minSpeedY;
+    if(boostSpeedY == 0){
+        if(speedY > maxSpeedY){
+            speedY = maxSpeedY;
+        } else if(speedY < minSpeedY){
+            speedY = minSpeedY;
+        }
+    }else{
+        if(speedY > boostSpeedY){
+            speedY = boostSpeedY;
+        } else if(speedY < minSpeedY){
+            speedY = minSpeedY;
+        }
     }
     
     x += speedX;

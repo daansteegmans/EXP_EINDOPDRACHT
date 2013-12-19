@@ -48,11 +48,13 @@ Menu::Menu(bool gameOver, string causeOfGameOver, int displayHeight, int display
         iconSpeed.loadImage("menu/icons/icon_speed.png");
         iconTime.loadImage("menu/icons/icon_time.png");
         iconCoins.loadImage("menu/icons/icon_coins.png");
-        
-        imgButton1.loadImage("menu/buttons/btn_red_left.png");
-        imgButton2.loadImage("menu/buttons/btn_red_right.png");
-        imgButton3.loadImage("menu/buttons/btn_green.png");
+    }else{
+        imgTitle.loadImage("menu/reachforthesky.png");
+        imgReplayBg.loadImage("menu/window_start.png");
     }
+    imgButton1.loadImage("menu/buttons/btn_red_left.png");
+    imgButton2.loadImage("menu/buttons/btn_red_right.png");
+    imgButton3.loadImage("menu/buttons/btn_green.png");
 }
 
 void Menu::update()
@@ -182,5 +184,12 @@ void Menu::draw()
             font->drawString("Duw op      ,      of      om opnieuw te beginnen.", (ofGetWidth() - imgReplayBg.width)/2 + 100, ofGetHeight()*0.7 + 83);
         }
         ofSetColor(255, 255, 255);
+    } else {
+        imgTitle.draw((ofGetWidth() - imgTitle.width)/2,ofGetHeight()*0.35);
+        imgReplayBg.draw((ofGetWidth() - imgReplayBg.width)/2,ofGetHeight()*0.5);
+        font->drawString("Duw op      ,      of      om te beginnen.", (ofGetWidth() - imgReplayBg.width)/2 + 145, ofGetHeight()*0.5 + 83);
+        imgButton1.draw((ofGetWidth() - imgReplayBg.width)/2 + imgReplayBg.width*0.315, ofGetHeight()*0.5 + imgReplayBg.height*0.47);
+        imgButton2.draw((ofGetWidth() - imgReplayBg.width)/2 + imgReplayBg.width*0.407, ofGetHeight()*0.5 + imgReplayBg.height*0.47);
+        imgButton3.draw((ofGetWidth() - imgReplayBg.width)/2 + imgReplayBg.width*0.52, ofGetHeight()*0.5 + imgReplayBg.height*0.47);
     }
 }

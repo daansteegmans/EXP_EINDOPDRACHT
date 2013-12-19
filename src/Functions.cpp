@@ -72,3 +72,65 @@ string Functions::checkCollisionPowerup(Player *objA, Powerup *objB)
     }
     return "no collision";
 }
+
+string Functions::checkCollisionBoost(Player *objA, Boost *objB)
+{
+    int vX = (objA->x + (objA->img.getWidth()/2)) - (objB->x + (objB->imgBg.width/2));
+    int vY = (objA->y + (objA->img.getHeight()/2)) - (objB->y + (objB->imgBg.width/2));
+    
+    float hWidths = (objA->img.getWidth()/2) + (objB->imgBg.width/2);
+    float hHeights = (objA->img.getHeight()/2) + (objB->imgBg.width/2);
+    string colDir = "";
+    
+    if(abs(vX) <= hWidths && abs(vY) <= hHeights){
+        int oX = hWidths - abs(vX);
+        int oY = hHeights - abs(vY);
+        
+        if(oX >= oY){
+            if(vY > 0){
+                colDir = "T";
+            }else{
+                colDir = "B";
+            }
+        }else{
+            if(vX > 0){
+                colDir = "L";
+            }else{
+                colDir = "R";
+            }
+        }
+        return colDir;
+    }
+    return "no collision";
+}
+
+string Functions::checkCollisionRock(Player *objA, Rock *objB)
+{
+    int vX = (objA->x + (objA->img.getWidth()/2)) - (objB->x + (objB->collisionBg.width/2));
+    int vY = (objA->y + (objA->img.getHeight()/2)) - (objB->y + (objB->collisionBg.width/2));
+    
+    float hWidths = (objA->img.getWidth()/2) + (objB->collisionBg.width/2);
+    float hHeights = (objA->img.getHeight()/2) + (objB->collisionBg.width/2);
+    string colDir = "";
+    
+    if(abs(vX) <= hWidths && abs(vY) <= hHeights){
+        int oX = hWidths - abs(vX);
+        int oY = hHeights - abs(vY);
+        
+        if(oX >= oY){
+            if(vY > 0){
+                colDir = "T";
+            }else{
+                colDir = "B";
+            }
+        }else{
+            if(vX > 0){
+                colDir = "L";
+            }else{
+                colDir = "R";
+            }
+        }
+        return colDir;
+    }
+    return "no collision";
+}

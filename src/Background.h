@@ -25,6 +25,7 @@ class Background
         float speedX;
         int maxSpeedY;
         int manoeuvreSpeedY;
+        int boostSpeedY;
         int minSpeedY;
         ofImage img;
         ofImage img2;

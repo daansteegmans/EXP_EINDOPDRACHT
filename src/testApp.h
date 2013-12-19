@@ -38,6 +38,7 @@ class testApp : public ofBaseApp{
         int controlDelay;
         int gameOverTime;
         int coinsGroupsMade;
+        bool startScreenActivated;
         string causeOfGameOver;
     
         bool blinkOn;
@@ -45,20 +46,50 @@ class testApp : public ofBaseApp{
         int numBlinks;
         int timeArduinoInitialized;
     
+        ofSoundPlayer bootSound;
+        bool bootHasPlayed;
         ofSoundPlayer backgroundMusic;
-        bool bgMusicIsPlaying;
+    
+        ofSoundPlayer moveSound;
+        ofSoundPlayer moveFastSound;
+        ofSoundPlayer moveLeftSound;
+        ofSoundPlayer moveRightSound;
+    
         ofSoundPlayer coinSound;
         ofSoundPlayer gameOverSound;
         ofSoundPlayer getPowerUpSound;
         ofSoundPlayer activateShieldSound;
         ofSoundPlayer activateBatterySound;
         ofSoundPlayer activateDoubleSound;
+        ofSoundPlayer powerUpDeactivateSound;
+        ofSoundPlayer errorSound;
+    
+        ofSoundPlayer boostSpeedSound;
+        ofSoundPlayer boostFuelSound;
+        ofSoundPlayer boostHealthSound;
+    
+        ofSoundPlayer playerHit1Sound;
+        ofSoundPlayer playerHit2Sound;
+        ofSoundPlayer playerHit3Sound;
+        ofSoundPlayer playerHit4Sound;
+        ofSoundPlayer playerHit5Sound;
+        ofSoundPlayer playerHit6Sound;
     
         int lastPowerUpActivated;
         int powerUpsMade;
+        int timePowerupDisallowed;
+        int timeHitRock;
+        int numHitRockPlayerBlinks;
+        bool updatePowerUpList;
         bool shieldActivated;
         bool batteryActivated;
         bool doubleActivated;
     
         int boostsMade;
+        int rocksMade;
+        float minNumRocksToMake;
+        int speedBoostLinesMade;
+        int rockLinesMade;
+        int createRockInterval;
+        int hitSpeedBoostTime;
 };

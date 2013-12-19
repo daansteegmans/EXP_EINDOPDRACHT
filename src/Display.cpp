@@ -12,17 +12,19 @@ Display::Display()
 {
     topBg.loadImage("display/display_top.png");
     bottomBg.loadImage("display/display_bottom.png");
-    fuelCurrentFill.loadImage("display/fuel.png");
-    healthCurrentFill.loadImage("display/health.png");
+    fuelOriginalFill.loadImage("display/fuel.png");
+    healthOriginalFill.loadImage("display/health.png");
     
     fuelBorderNormal.loadImage("display/fuel_border_normal.png");
     fuelBorderHightlight.loadImage("display/fuel_border_highlight.png");
+    fuelBorderFilling.loadImage("display/fuel_border_filling.png");
     
     fuelImageNormal.loadImage("display/fuel_normal.png");
     fuelImageHighlight.loadImage("display/fuel_highlight.png");
     
     healthBorderNormal.loadImage("display/health_border_normal.png");
     healthBorderHightlight.loadImage("display/health_border_highlight.png");
+    healthBorderFilling.loadImage("display/health_border_filling.png");
     
     healthImageNormal.loadImage("display/health_normal.png");
     healthImageHighlight.loadImage("display/health_highlight.png");
@@ -75,16 +77,21 @@ void Display::setDefault(){
     fuelStartedBlinkingTime = 0;
     numFuelBlinks = 0;
     currentShownFuel = "normal";
+    fuelFillingStartedTime = false;
+    newFuelValue = 0;
     
     healthStartedBlinkingTime = 0;
     numHealthBlinks = 0;
+    healthFillingStartedTime = false;
+    newHealthValue = 0;
+    healthFillingSign = "+";
     currentShownHealth = "normal";
     
-    fuelOriginalFill = fuelCurrentFill;
+    fuelCurrentFill = fuelOriginalFill;
     fuelBorderShown = fuelBorderNormal;
     fuelImageShown = fuelImageNormal;
     
-    healthOriginalFill = healthCurrentFill;
+    healthCurrentFill = healthOriginalFill;
     healthBorderShown = healthBorderNormal;
     healthImageShown = healthImageNormal;
     
@@ -104,6 +111,9 @@ void Display::setDefault(){
     powerUp1Text = "leeg";
     powerUp2Text = "leeg";
     powerUp3Text = "leeg";
+    
+    numPowerUpBlinks = 0;
+    blinkOn = false;
     
     Display::update();
     Display::draw();
@@ -141,6 +151,8 @@ void Display::update()
         }
     }else{
         fuelStartedBlinkingTime = 0;
+        fuelBorderShown = fuelBorderNormal;
+        fuelImageShown = fuelImageNormal;
         numFuelBlinks = 0;
     }
     
@@ -163,6 +175,8 @@ void Display::update()
         }
     }else{
         healthStartedBlinkingTime = 0;
+        healthBorderShown = healthBorderNormal;
+        healthImageShown = healthImageNormal;
         numHealthBlinks = 0;
     }
     
@@ -170,6 +184,29 @@ void Display::update()
         isAlarmPlaying = false;
         alarmSound.stop();
     }
+    
+    if(fuelFillingStartedTime != 0 && fuel < newFuelValue){
+        fuel+=0.7;
+        fuelBorderShown = fuelBorderFilling;
+    }else{
+        fuelFillingStartedTime = 0;
+    }
+    
+    if(healthFillingStartedTime != 0 && health != newHealthValue){
+        if(healthFillingSign == "+"){
+            health+=0.7;
+        }else{
+            health-=0.7;
+        }
+        healthBorderShown = healthBorderFilling;
+        
+        if(health < newHealthValue+0.7 && health > newHealthValue-0.7){
+            health = newHealthValue;
+        }
+    }else{
+        healthFillingStartedTime = 0;
+    }
+    
     if(maxSpeed < speed)maxSpeed = speed;
     if(temperature < minTemperature) temperature = minTemperature;
     temperature = round(temperature*10)/10;
@@ -183,6 +220,27 @@ void Display::startAlarm(){
     }
 }
 
+void Display::startFuelFilling(float newValue){
+    fuelFillingStartedTime = ofGetElapsedTimeMillis();
+    newFuelValue = newValue;
+    if(newFuelValue >= 100)newFuelValue = 100;
+}
+
+void Display::startHealthFilling(float newValue){
+    healthFillingStartedTime = ofGetElapsedTimeMillis();
+    newHealthValue = newValue;
+    if(newHealthValue >= 100){
+        newHealthValue = 100;
+    }else if(newValue < 0){
+        newHealthValue = 0;
+    }
+    if(newHealthValue < health){
+        healthFillingSign = "-";
+    }else{
+        healthFillingSign = "+";
+    }
+}
+
 void Display::draw()
 {
     ofSetColor(255,255,255,255*alpha);
@@ -192,8 +250,12 @@ void Display::draw()
     healthCurrentFill.draw(ofGetWidth()/2 - topBg.getWidth()/2 + 468, topY + 45);
     bottomBg.draw(ofGetWidth()/2 - bottomBg.getWidth()/2, bottomY);
     
+    if(fuelFillingStartedTime != 0 && fuel < newFuelValue)ofSetColor(255,255,255,255);
     fuelBorderShown.draw(ofGetWidth()/2 - fuelBorderShown.width - 5, topY + topBg.height/2 + 3);
+    ofSetColor(255,255,255,255*alpha);
+    if(healthFillingStartedTime != 0 && health < newHealthValue)ofSetColor(255,255,255,255);
     healthBorderShown.draw(ofGetWidth()/2 + 5, topY + topBg.height/2 + 3);
+    ofSetColor(255,255,255,255*alpha);
     
     fuelImageShown.draw(ofGetWidth()/2 - fuelImageShown.width - 5, topY + topBg.height + 5);
     healthImageShown.draw(ofGetWidth()/2 + 5, topY + topBg.height + 5);
@@ -246,12 +308,16 @@ void Display::draw()
     convert.str("");
     convert.clear();
     
+    if(blinkOn) ofSetColor(255,255,255,255);
+    
     string powerup1Str;
     convert << powerUp1Text;
     powerup1Str = convert.str();
     font2->drawString(powerup1Str, ofGetWidth()/2 - bottomBg.getWidth()/2 + bottomBg.getWidth()*0.12 + iconPowerUp1Shown.width + 20, bottomY + 80);
     convert.str("");
     convert.clear();
+    
+    ofSetColor(255,255,255,255*(0.6*alpha));
     
     string powerup2Str;
     convert << powerUp2Text;
