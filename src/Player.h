@@ -33,6 +33,13 @@ class Player
         bool gameOver;
         float alpha;
     
+        float powerUpAlpha;
+        bool powerUpActivated;
+        ofImage powerUpShield;
+        ofImage powerUpDouble;
+        ofImage powerUpBattery;
+        ofImage powerUpBg;
+    
         ofImage fullImg;
         ofImage img;
         int imageWidth;

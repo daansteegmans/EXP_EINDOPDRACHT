@@ -16,6 +16,10 @@ Player::Player()
     imageWidth = 130;
     numFrames = 5;
     
+    powerUpShield.loadImage("player/powerup_shield.png");
+    powerUpDouble.loadImage("player/powerup_double.png");
+    powerUpBattery.loadImage("player/powerup_battery.png");
+    
     Player::setDefault();
 }
 
@@ -57,19 +61,20 @@ void Player::update()
 
 void Player::draw()
 {
-    ofSetColor(255, 255, 255, 255*alpha);
-    
     x += velX;
     y -= velY;
+    ofSetColor(255, 255, 255, 255*(alpha*0.7*powerUpAlpha));
+    if(powerUpActivated){
+        powerUpBg.draw((x + img.width/2) - powerUpBg.width/2, (y + img.height/2) - powerUpBg.height/2);
+        if(powerUpAlpha < 1)powerUpAlpha+=0.03;
+    }else{
+        if(powerUpAlpha > 0){
+            powerUpAlpha-=0.03;
+            powerUpBg.draw((x + img.width/2) - powerUpBg.width/2, (y + img.height/2) - powerUpBg.height/2);
+        }
+    }
+    ofSetColor(255, 255, 255, 255*alpha);
     img.draw(x,y);
-    
-    /*ofPushMatrix();
-        ofTranslate(img.width/2, img.height/2, 0);//move pivot to centre
-        ofRotate(ofGetFrameNum() * .1, 0, 0, 1);//rotate from centre
-        ofPushMatrix();
-            img.draw(x + -img.width/2, y + -img.height/2);//move back by the centre offset
-        ofPopMatrix();
-    ofPopMatrix();*/
     
     ofSetColor(255, 255, 255, 255);
 }
@@ -90,7 +95,6 @@ void Player::setDefault(){
     currentSpriteSheetFrame = 0;
     action = "normal_ascend";
     
-    // move sound
-    // soundPlayer.loadSound("sounds/move.mp3");
-    // soundPlayer.setLoop(true);
+    powerUpActivated = false;
+    powerUpAlpha = 0;
 }

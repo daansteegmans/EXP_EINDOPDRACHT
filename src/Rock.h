@@ -15,12 +15,18 @@
 class Rock
 {
     public:
-        Rock(string rockName, float offsetX, int velX);
+        Rock(string rockName, float offsetX, int velX, int offsetY);
         void update();
         void draw();
     
+        float rockAlpha;
         ofImage imgBg;
         ofImage collisionBg;
+        ofImage imgOriginalExplosion;
+        ofImage imgExplosion;
+        int currentExplosionFrame;
+        int startExplosionTime;
+    
         string name;
     
         float x;

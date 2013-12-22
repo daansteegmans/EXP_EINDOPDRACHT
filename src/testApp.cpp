@@ -20,6 +20,43 @@ void testApp::setup()
     countDown = new Countdown(round(controlDelay/1000));
     
     keys.resize(2);
+    
+    testApp::setUpDefault();
+    
+    bootSound.loadSound("sounds/boot.mp3");
+    bootHasPlayed = false;
+    backgroundMusic.loadSound("music/awesomearcademusic.mp3");
+    
+    moveSound.loadSound("sounds/move.mp3");
+    moveFastSound.loadSound("sounds/movefast.mp3");
+    moveLeftSound.loadSound("sounds/moveright.mp3");
+    moveRightSound.loadSound("sounds/moveleft.mp3");
+    
+    coinSound.loadSound("sounds/coin.mp3");
+    gameOverSound.loadSound("sounds/gameover.mp3");
+    getPowerUpSound.loadSound("sounds/getpowerup.mp3");
+    activateShieldSound.loadSound("sounds/activateshield.mp3");
+    activateBatterySound.loadSound("sounds/activatebattery.mp3");
+    activateDoubleSound.loadSound("sounds/activatedouble.mp3");
+    powerUpDeactivateSound.loadSound("sounds/powerupdeactivate.mp3");
+    errorSound.loadSound("sounds/error.mp3");
+    explosionSound.loadSound("sounds/explosion.mp3");
+    
+    boostSpeedSound.loadSound("sounds/boostspeed.mp3");
+    boostFuelSound.loadSound("sounds/boostfuel.mp3");
+    boostHealthSound.loadSound("sounds/boosthealth.mp3");
+    
+    playerHit1Sound.loadSound("sounds/hit1.mp3");
+    playerHit2Sound.loadSound("sounds/hit1.mp3");
+    playerHit3Sound.loadSound("sounds/hit1.mp3");
+    playerHit4Sound.loadSound("sounds/hit1.mp3");
+    playerHit5Sound.loadSound("sounds/hit1.mp3");
+    playerHit6Sound.loadSound("sounds/hit1.mp3");
+    
+    menu = new Menu(false, "", 0, 0, 0, 0, 0);
+}
+
+void testApp::setUpDefault(){
     gameOverTime = 0;
     startScreenActivated = true;
     
@@ -45,37 +82,6 @@ void testApp::setup()
     rockLinesMade = 0;
     createRockInterval = 1600;
     minNumRocksToMake = 0;
-    
-    bootSound.loadSound("sounds/boot.mp3");
-    bootHasPlayed = false;
-    backgroundMusic.loadSound("music/awesomearcademusic.mp3");
-    
-    moveSound.loadSound("sounds/move.mp3");
-    moveFastSound.loadSound("sounds/movefast.mp3");
-    moveLeftSound.loadSound("sounds/moveright.mp3");
-    moveRightSound.loadSound("sounds/moveleft.mp3");
-    
-    coinSound.loadSound("sounds/coin.mp3");
-    gameOverSound.loadSound("sounds/gameover.mp3");
-    getPowerUpSound.loadSound("sounds/getpowerup.mp3");
-    activateShieldSound.loadSound("sounds/activateshield.mp3");
-    activateBatterySound.loadSound("sounds/activatebattery.mp3");
-    activateDoubleSound.loadSound("sounds/activatedouble.mp3");
-    powerUpDeactivateSound.loadSound("sounds/powerupdeactivate.mp3");
-    errorSound.loadSound("sounds/error.mp3");
-    
-    boostSpeedSound.loadSound("sounds/boostspeed.mp3");
-    boostFuelSound.loadSound("sounds/boostfuel.mp3");
-    boostHealthSound.loadSound("sounds/boosthealth.mp3");
-    
-    playerHit1Sound.loadSound("sounds/hit1.mp3");
-    playerHit2Sound.loadSound("sounds/hit1.mp3");
-    playerHit3Sound.loadSound("sounds/hit1.mp3");
-    playerHit4Sound.loadSound("sounds/hit1.mp3");
-    playerHit5Sound.loadSound("sounds/hit1.mp3");
-    playerHit6Sound.loadSound("sounds/hit1.mp3");
-    
-    menu = new Menu(false, "", 0, 0, 0, 0, 0);
 }
 
 void testApp::startUpBlink(){
@@ -315,23 +321,30 @@ void testApp::update()
                     }else if(objects->collisionRocks[i]->name == "rock_large"){
                         damage = 50;
                     }
-                    timeHitRock = ofGetElapsedTimeMillis();
                     if(shieldActivated)damage=0;
                     display->startHealthFilling(display->health-damage);
-                    
-                    int random = 1+rand()%6;
-                    if(random == 1){
-                        playerHit1Sound.play();
-                    }else if(random == 2){
-                        playerHit2Sound.play();
-                    }else if(random == 3){
-                        playerHit3Sound.play();
-                    }else if(random == 4){
-                        playerHit4Sound.play();
-                    }else if(random == 5){
-                        playerHit5Sound.play();
-                    }else if(random == 6){
-                        playerHit6Sound.play();
+                    if(damage == 0){
+                        timeHitRock = 0;
+                        objects->collisionRocks[i]->currentExplosionFrame = 1;
+                        explosionSound.play();
+                        
+                    }else{
+                        timeHitRock = ofGetElapsedTimeMillis();
+                        
+                        int random = 1+rand()%6;
+                        if(random == 1){
+                            playerHit1Sound.play();
+                        }else if(random == 2){
+                            playerHit2Sound.play();
+                        }else if(random == 3){
+                            playerHit3Sound.play();
+                        }else if(random == 4){
+                            playerHit4Sound.play();
+                        }else if(random == 5){
+                            playerHit5Sound.play();
+                        }else if(random == 6){
+                            playerHit6Sound.play();
+                        }
                     }
                     
                     vector<Rock *> collisionRocks;
@@ -368,6 +381,9 @@ void testApp::update()
                     shieldActivated = false;
                     batteryActivated = false;
                     doubleActivated = false;
+                    
+                    player->powerUpActivated = false;
+                    
                     powerUpDeactivateSound.play();
                     
                     display->blinkOn = false;
@@ -411,7 +427,7 @@ void testApp::update()
                 }
             }
             
-            //POWERUPS
+            //POWERUPS ACTIVATING
             if(arduino.getDigital(3) == 1 /*keys[32] == true*/ && ofGetElapsedTimeMillis() > lastPowerUpActivated + 5000 && display->powerupNames.size() > 0){
                 lastPowerUpActivated = ofGetElapsedTimeMillis();
                 updatePowerUpList = true;
@@ -419,13 +435,17 @@ void testApp::update()
                 if(display->powerupNames[0] == "shield"){
                     activateShieldSound.play();
                     shieldActivated = true;
+                    player->powerUpBg = player->powerUpShield;
                 }else if(display->powerupNames[0] == "battery"){
                     activateBatterySound.play();
                     batteryActivated = true;
+                    player->powerUpBg = player->powerUpBattery;
                 }else if(display->powerupNames[0] == "double"){
                     activateDoubleSound.play();
                     doubleActivated = true;
+                    player->powerUpBg = player->powerUpDouble;
                 }
+                player->powerUpActivated = true;
                 arduino.sendDigital(10, ARD_LOW);
             }
             
@@ -584,7 +604,7 @@ void testApp::update()
         }
         
         //OBJECT GENERATING - ROCK LINES
-        if(background->y > backgroundOriginalY + 5000 + (createRockInterval*5)*rockLinesMade){
+        if(background->y > backgroundOriginalY + 5000 + (createRockInterval*2)*rockLinesMade){
             objects->makeRockLine();
             rockLinesMade++;
         }
@@ -689,6 +709,9 @@ void testApp::update()
             display->fuelBorderShown = display->fuelBorderNormal;
             display->healthBorderShown = display->healthBorderNormal;
             createRockInterval = 1600;
+            timeHitRock = 0;
+            numHitRockPlayerBlinks = 0;
+            player->powerUpActivated = false;
             
             moveSound.stop();
             moveFastSound.stop();
@@ -712,13 +735,7 @@ void testApp::update()
         
         int currentTime = ofGetElapsedTimeMillis()-timeStarted;
         if((arduino.getDigital(3) == 1 || arduino.getDigital(4) == 1 || arduino.getDigital(5) == 1) /*(keys[356] == true || keys[358] == true || keys[32] == true)*/ && currentTime > (gameOverTime+3000)){
-            gameOverTime = 0;
-            causeOfGameOver = "";
-            coinsGroupsMade = 0;
-            powerUpsMade = 0;
-            boostsMade = 0;
-            rocksMade = 0;
-            speedBoostLinesMade = 0;
+            testApp::setUpDefault();
             
             timeStarted = currentTime + timeStarted;
             background->setDefault();

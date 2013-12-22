@@ -93,28 +93,31 @@ void Objects::makeRock(int offsetX){
         speedX*=-1;
     }
     if(random == 0 || random == 1){
-        rock = new Rock("rock_small", offsetX, speedX);
+        rock = new Rock("rock_small", offsetX, speedX, 0);
     }else if(random == 2 || random == 3){
-        rock = new Rock("rock_medium", offsetX, speedX);
+        rock = new Rock("rock_medium", offsetX, speedX, 0);
     }else if(random == 4){
-        rock = new Rock("rock_large", offsetX, speedX);
+        rock = new Rock("rock_large", offsetX, speedX, 0);
     }
     rocks.push_back(rock);
     collisionRocks.push_back(rock);
 }
 
 void Objects::makeRockLine(){
-    cout << "makeRockLine" << endl;
-    int numRocks = floor(ofGetWidth()/300)*3;
-    int posX = -((numRocks/3)*300);
+    int numRocks = floor(ofGetWidth()/400)*3;
+    if(numRocks%2 == 0)numRocks++;
+    int posX = -((numRocks/3)*400);
     for(int i = 0; i<numRocks; i++){
         int random = rand() % 3;
         int width = getRockWidth(random);
         string name = getRockName(random);
-        rock = new Rock(name, posX, 0);
+        
+        int offsetY = abs(i-(numRocks-1)/2) * 200;
+        
+        rock = new Rock(name, posX, 0, offsetY);
         rocks.push_back(rock);
         collisionRocks.push_back(rock);
-        posX+=300;
+        posX+=400;
     }
 }
 
@@ -192,16 +195,16 @@ void Objects::update()
 
 void Objects::draw()
 {
+    for(int k=0; k<boosts.size(); k++){
+        boosts[k]->draw();
+    }
+    
     for(int i=0; i<coins.size(); i++){
         coins[i]->draw();
     }
     
     for(int j=0; j<powerups.size(); j++){
         powerups[j]->draw();
-    }
-    
-    for(int k=0; k<boosts.size(); k++){
-        boosts[k]->draw();
     }
     
     for(int l=0; l<rocks.size(); l++){

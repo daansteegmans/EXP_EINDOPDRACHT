@@ -19,6 +19,7 @@ class testApp : public ofBaseApp{
 		void draw();
         void setupArduino(const int & version);
         void startUpBlink();
+        void setUpDefault();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -63,6 +64,7 @@ class testApp : public ofBaseApp{
         ofSoundPlayer activateDoubleSound;
         ofSoundPlayer powerUpDeactivateSound;
         ofSoundPlayer errorSound;
+        ofSoundPlayer explosionSound;
     
         ofSoundPlayer boostSpeedSound;
         ofSoundPlayer boostFuelSound;
